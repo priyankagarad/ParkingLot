@@ -4,6 +4,8 @@ public class ParkingLotSystem {
     Object vehicle;
 
     public void park(Object vehicle) {
+        if(this.vehicle!=null)
+            throw new ParkingLotException("Parking lot is full");
         this.vehicle = vehicle;
     }
 
@@ -12,13 +14,4 @@ public class ParkingLotSystem {
             return true;
         return false;
     }
-
-    public boolean unPark(Object vehicle){
-        if(vehicle==null)
-            return false;
-        if (this.vehicle.equals(vehicle))
-            return true;
-        return false;
-    }
-
 }
