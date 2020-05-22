@@ -1,11 +1,10 @@
 package com.bl.parkinglot;
-public class ParkingLot {
+public class ParkingLotSystem {
 
     Object vehicle;
 
     public void park(Object vehicle) {
         this.vehicle = vehicle;
-
     }
 
     public boolean isVehiclePark(Object vehicle){

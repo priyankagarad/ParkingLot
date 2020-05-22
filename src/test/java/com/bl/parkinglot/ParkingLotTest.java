@@ -4,12 +4,12 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class ParkingLotTest {
-    ParkingLot parkingLot;
+    ParkingLotSystem parkingLot;
     Object vehicle;
 
     @Before
     public void setUp(){
-        parkingLot=new ParkingLot();
+        parkingLot=new ParkingLotSystem();
         vehicle = new Object();
     }
 
