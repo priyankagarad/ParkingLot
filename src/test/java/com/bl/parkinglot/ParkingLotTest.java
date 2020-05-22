@@ -5,38 +5,37 @@ import org.junit.Test;
 
 public class ParkingLotTest {
     ParkingLotSystem parkingLot;
-    Object vehicle;
+     Object car;
 
     @Before
     public void setUp() {
         parkingLot = new ParkingLotSystem();
-        vehicle = new Object();
+        car= new Object();
     }
 
     @Test
     public void givenVehicle_whenPark_shouldReturnTrue() {
-        parkingLot.park(vehicle);
-        boolean result = parkingLot.isVehiclePark(vehicle);
+        parkingLot.park(car);
+        boolean result = parkingLot.isVehiclePark(car);
         Assert.assertTrue(result);
     }
 
     @Test
     public void givenVehicle_WhenAllReadyParked_shouldReturnException() {
         try {
-            parkingLot.park(vehicle);
-            parkingLot.park(new Object());
+            parkingLot.park(car);
         } catch (ParkingLotException e) {
-            Assert.assertEquals("Parking lot is full",e.getMessage());
+            Assert.assertEquals(ParkingLotException.ExceptionType.VEHICLE_ALREADY_PARK,e.getMessage());
         }
     }
 
     @Test
     public void givenParkingLot_WhenFull_ThenReturnExceptionMessage(){
         try {
-            parkingLot.park(vehicle);
+            parkingLot.park(car);
             parkingLot.park(new Object());
         } catch (ParkingLotException e) {
-            Assert.assertEquals("Parking lot is full",e.getMessage());
+            Assert.assertEquals(ParkingLotException.ExceptionType.LOT_IS_FULL,e.getMessage());
         }
     }
  }
