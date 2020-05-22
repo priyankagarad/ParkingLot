@@ -19,4 +19,5 @@ public class ParkingLotTest {
         boolean result=parkingLot.isVehiclePark(vehicle);
         Assert.assertTrue(result);
     }
+
 }
