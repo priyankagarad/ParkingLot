@@ -29,4 +29,15 @@ public class ParkingLotTest {
             Assert.assertEquals("Parking lot is full",e.getMessage());
         }
     }
-}
+
+    @Test
+    public void givenParkingLot_WhenFull_ThenReturnExceptionMessage(){
+        try {
+            parkingLot.park(vehicle);
+            parkingLot.park(new Object());
+        } catch (ParkingLotException e) {
+            Assert.assertEquals("Parking lot is full",e.getMessage());
+        }
+    }
+ }
+
