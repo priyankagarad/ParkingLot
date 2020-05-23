@@ -1,15 +1,30 @@
 package com.bl.parkinglot;
-public class ParkingLotSystem {
-    Object vehicle;
+public class ParkingLotSystem
+{
 
-    public ParkingLotSystem(){
+    private int actualCapacity;
+    private int currentCapacity;
+    Object vehicle;
+    private ParkingLotOwer owner;
+
+    public ParkingLotSystem(int capacity){
+        this.currentCapacity=0;
+        this.actualCapacity=capacity;
     }
 
-    public boolean parked(Object vehicle){
-        if (this.vehicle!=null)
-            return false;
+    public void  parked(Object vehicle) throws Exception {
+        if (this.currentCapacity == this.actualCapacity){
+            owner.capacityFull();
+        throw new Exception("parking  Lot is full");
+    }
+        this.currentCapacity++;
         this.vehicle=vehicle;
-        return true;
+    }
+
+    public boolean isVehicleParked(Object vehicle){
+        if(this.vehicle.equals(vehicle))
+            return true;
+        return false;
     }
 
     public boolean UnPark(Object vehicle) {
@@ -20,5 +35,13 @@ public class ParkingLotSystem {
             return true;
         }
         return false;
+    }
+
+    public void registerOwner(ParkingLotOwer owner) {
+        this.owner=owner;
+    }
+
+    public void setCapacity(int capacity) {
+        this.actualCapacity=capacity;
     }
 }
