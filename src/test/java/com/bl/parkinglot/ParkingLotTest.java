@@ -20,7 +20,7 @@ public class ParkingLotTest {
     }
 
     @Test
-    public void givenVehicle_WhenAllReadyParked_shouldReturnException( {
+    public void givenVehicle_WhenAllReadyParked_shouldReturnException() {
         try {
             parkingLot.park(car);
         } catch (ParkingLotException e) {
@@ -29,11 +29,13 @@ public class ParkingLotTest {
     }
 
     @Test
-    public void givenParkingLot_WhenFull_ThenReturnExceptionMessage(){
+    public void givenVehicle_whenUnpark_shouldReturnTrue(){
         try {
             parkingLot.park(car);
+            boolean result=parkingLot.isUnPark(car);
+            Assert.assertEquals(true,result);
         } catch (ParkingLotException e) {
-            Assert.assertEquals(ParkingLotException.ExceptionType.LOT_IS_FULL,e.getMessage());
+            e.printStackTrace();
         }
     }
  }
