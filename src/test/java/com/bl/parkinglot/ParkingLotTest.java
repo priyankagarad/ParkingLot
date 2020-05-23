@@ -4,39 +4,26 @@ import org.junit.Before;
 import org.junit.Test;
 public class ParkingLotTest {
     ParkingLotSystem parkingLot;
-    Object car;
+    Object vehicle;
 
     @Before
     public void setUp() {
         parkingLot = new ParkingLotSystem();
-        car= new Object();
+        vehicle=new Object();
     }
 
     @Test
-    public void givenVehicle_whenPark_shouldReturnTrue() {
-        parkingLot.park(car);
-        boolean result = parkingLot.isVehiclePark(car);
-        Assert.assertTrue(result);
+    public void givenVehicle_whenParked_shouldReturnTrue() {
+        parkingLot.parked(vehicle);
+        boolean isParked = parkingLot.parked(new Object());
+        Assert.assertTrue(isParked);
     }
 
     @Test
-    public void givenVehicle_WhenAllReadyParked_shouldReturnException() {
-        try {
-            parkingLot.park(car);
-        } catch (ParkingLotException e) {
-            Assert.assertEquals(ParkingLotException.ExceptionType.VEHICLE_ALREADY_PARK,e.getMessage());
-        }
-    }
-
-    @Test
-    public void givenVehicle_whenUnpark_shouldReturnTrue(){
-        try {
-            parkingLot.park(car);
-            boolean result=parkingLot.isUnPark(car);
-            Assert.assertEquals(true,result);
-        } catch (ParkingLotException e) {
-            e.printStackTrace();
-        }
+    public void givenVehicle_whenUnparked_shouldReturnTrue(){
+            parkingLot.parked(vehicle);
+            boolean isUnparked=parkingLot.UnPark(vehicle);
+            Assert.assertEquals(true,isUnparked);
     }
  }
 
