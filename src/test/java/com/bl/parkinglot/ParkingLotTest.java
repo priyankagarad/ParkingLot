@@ -2,10 +2,9 @@ package com.bl.parkinglot;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-
 public class ParkingLotTest {
     ParkingLotSystem parkingLot;
-     Object car;
+    Object car;
 
     @Before
     public void setUp() {
@@ -21,7 +20,7 @@ public class ParkingLotTest {
     }
 
     @Test
-    public void givenVehicle_WhenAllReadyParked_shouldReturnException() {
+    public void givenVehicle_WhenAllReadyParked_shouldReturnException( {
         try {
             parkingLot.park(car);
         } catch (ParkingLotException e) {
@@ -33,7 +32,6 @@ public class ParkingLotTest {
     public void givenParkingLot_WhenFull_ThenReturnExceptionMessage(){
         try {
             parkingLot.park(car);
-            parkingLot.park(new Object());
         } catch (ParkingLotException e) {
             Assert.assertEquals(ParkingLotException.ExceptionType.LOT_IS_FULL,e.getMessage());
         }
