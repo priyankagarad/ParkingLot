@@ -14,9 +14,15 @@ public class ParkingLotTest {
 
     @Test
     public void givenVehicle_whenParked_shouldReturnTrue() {
-        parkingLot.parked(vehicle);
         boolean isParked = parkingLot.parked(new Object());
         Assert.assertTrue(isParked);
+    }
+    
+    @Test
+    public void givenVehicle_whenAlReadyParked_shouldReturnFalse(){
+        parkingLot.parked(vehicle);
+        boolean isParked=parkingLot.parked(vehicle);
+        Assert.assertFalse(isParked);
     }
 
     @Test
