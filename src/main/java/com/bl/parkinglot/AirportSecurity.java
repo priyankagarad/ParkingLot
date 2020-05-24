@@ -1,14 +1,13 @@
 package com.bl.parkinglot;
-
 public class AirportSecurity {
     private boolean isFullCapacity;
 
-    public void capacityFull() {
-        isFullCapacity=true;
-    }
-
-    public boolean isCapacityFull() {
+    public boolean capacityFull() {
         return this.isFullCapacity;
     }
+
+  /*  public boolean isCapacityFull() {
+        return this.isFullCapacity;
+    }*/
 }
 

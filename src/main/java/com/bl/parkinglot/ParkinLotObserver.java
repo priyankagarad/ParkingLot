@@ -1,8 +1,9 @@
 package com.bl.parkinglot;
 
 public interface ParkinLotObserver {
-    public void capacityFull();
+    void capacityFull();
 
+    boolean isCapacityFull();
 }
 
 

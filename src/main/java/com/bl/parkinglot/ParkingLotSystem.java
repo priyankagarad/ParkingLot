@@ -23,8 +23,8 @@ public class ParkingLotSystem
             }
             owner.capacityFull();
             security.capacityFull();
-        throw new Exception("parking  Lot is full");
-    }
+            throw new Exception("parking  Lot is full");
+        }
         this.currentCapacity++;
         this.vehicle=vehicle;
     }
