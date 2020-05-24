@@ -1,5 +1,6 @@
 package com.bl.parkinglot;
-public class ParkingLotOwer implements ParkinLotObserver {
+
+public class AirportSecurity {
     private boolean isFullCapacity;
 
     public void capacityFull() {
@@ -10,3 +11,4 @@ public class ParkingLotOwer implements ParkinLotObserver {
         return this.isFullCapacity;
     }
 }
+
