@@ -12,7 +12,7 @@ public class ParkingLotAttender
     {
         this.vehicle=vehicle;
     }
-    public ParkingLotAttender(Object vehicle, List<ParkingLotOwer> parkingSlots) {
+    public ParkingLotAttender(List parkingSlots,Object vehicle) {
         this.vehicle = vehicle;
         this.parkingSlots = parkingSlots;
     }

@@ -2,6 +2,7 @@ package com.bl.parkinglot;
 import com.bl.parkinglot.exception.ParkinLotException;
 import com.bl.parkinglot.model.AirportSecurity;
 import com.bl.parkinglot.model.ParkingLotOwer;
+import com.bl.parkinglot.service.ParkingLotAttender;
 import com.bl.parkinglot.service.ParkingLotSystem;
 import org.junit.Assert;
 import org.junit.Before;
@@ -99,6 +100,18 @@ public class ParkingLotTest {
         } catch (ParkinLotException e) {
             boolean capacityFull = owner.isCapacityFull();
             Assert.assertFalse(capacityFull);
+        }
+    }
+
+    @Test
+    public void givenParkingLotSlot_WhenCarCome_ShouldAttendermarkCar() {
+        ParkingLotOwer owner = new ParkingLotOwer();
+        try {
+            parkingLot.registerParkingLotObserver(owner);
+            ParkingLotAttender parkingLotAttender=new ParkingLotAttender(vehicle);
+            ParkingLotAttender attender=parkingLot.getParkingLotAttendant(parkingLotAttender);
+            Assert.assertEquals(attender,parkingLotAttender);
+        } catch (ParkinLotException e) {
         }
     }
 }
