@@ -37,6 +37,17 @@ public class ParkingLotTest {
     }
 
     @Test
+    public void givenVehicleNotPresentInParkingLot_WhenUnPark_ThenThrowException() {
+        Object vehicle1 = null;
+        try {
+            parkingLot.parked(vehicle);
+            boolean result=parkingLot.UnPark(vehicle1);
+            Assert.assertFalse("vehicle is not Park in parking lot",false);
+        } catch (ParkinLotException e) {
+        }
+    }
+
+    @Test
     public void giveParkingLot_whenFull_shouldInformOwner() {
         ParkingLotOwer owner = new ParkingLotOwer();
         parkingLot.registerParkingLotObserver(owner);
@@ -88,17 +99,6 @@ public class ParkingLotTest {
         } catch (ParkinLotException e) {
             boolean capacityFull = owner.isCapacityFull();
             Assert.assertFalse(capacityFull);
-        }
-    }
-
-    @Test
-    public void givenVehicleNotPresentInParkingLot_WhenUnPark_ThenThrowException() {
-        Object vehicle1 = null;
-        try {
-            parkingLot.parked(vehicle);
-            boolean result=parkingLot.UnPark(vehicle1);;
-        } catch (ParkinLotException e) {
-            Assert.assertEquals("This vehicle not park  parking lot",e.getMessage());
         }
     }
 }

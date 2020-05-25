@@ -1,8 +1,14 @@
 package com.bl.parkinglot.model;
-public class ParkingLotOwer implements ParkinLotObserver {
+public class ParkingLotOwer<count> implements ParkinLotObserver {
     private boolean isFullCapacity;
+    private int count=0;
 
     public ParkingLotOwer() {
+    }
+
+    @Override
+    public Object get(int i) {
+        return null;
     }
 
     public boolean isCapacityFull() {
@@ -14,7 +20,8 @@ public class ParkingLotOwer implements ParkinLotObserver {
     }
 
     @Override
-    public void parkingAvailable() {
+    public int getParkingSlot() {
+        return count++;
     }
 
 }

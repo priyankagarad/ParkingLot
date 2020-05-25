@@ -1,7 +1,7 @@
 package com.bl.parkinglot.exception;
 public class ParkinLotException extends RuntimeException {
     public enum ExceptionType {
-        VEHICLE_NOT_FOUND, PARKING_IS_FULL,ALREADY_PARKED;
+        VEHICLE_NOT_FOUND, PARKING_IS_FULL,ALREADY_PARKED,NO_SUCH_ATTENDANT;
     }
 
     public ExceptionType type;

@@ -7,8 +7,13 @@ package com.bl.parkinglot.service;
 import com.bl.parkinglot.exception.ParkinLotException;
 import com.bl.parkinglot.model.AirportSecurity;
 import com.bl.parkinglot.model.ParkinLotObserver;
+import com.bl.parkinglot.model.ParkingLotOwer;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 public class ParkingLotSystem
 {
     /**+
@@ -18,6 +23,8 @@ public class ParkingLotSystem
     private int actualCapacity;
     private List<Object> vehicleList;
     private List<ParkinLotObserver> observerList;
+    Map<Integer,Object> vehicleMap=new HashMap();
+
     private AirportSecurity security;
     ParkinLotObserver observer;
 
@@ -31,7 +38,7 @@ public class ParkingLotSystem
         this.actualCapacity = capacity;
     }
 
-    /** To Park The Vehicle */
+    /** To voidPark The Vehicle */
     public void parked(Object vehicle) throws ParkinLotException {
         if (isVehicleParked( vehicle )) {
             throw new ParkinLotException( ParkinLotException.ExceptionType.ALREADY_PARKED,"already parked" );
@@ -42,7 +49,32 @@ public class ParkingLotSystem
             }
             throw new ParkinLotException( ParkinLotException.ExceptionType.PARKING_IS_FULL,"Parking is full");
         }
-        this.vehicleList.add( vehicle );
+            this.vehicleList.add(vehicle);
+
+    }
+
+    public void parkVehicle(int slot,Object vehicle) {
+        if (this.actualCapacity==this.vehicleList.size()) {
+            for(ParkinLotObserver parkingOwner:observerList)
+                parkingOwner.isCapacityFull();
+            throw new ParkinLotException(ParkinLotException.ExceptionType.PARKING_IS_FULL, "PARKING_IS_FULL");
+        }
+        vehicleMap.put(slot,vehicle);
+    }
+
+    public ParkingLotAttender getParkingLotAttendant(ParkingLotAttender attendant)
+    {
+        ParkingLotOwer parkingOwner= (ParkingLotOwer)observerList.get(0);
+        parkVehicle(parkingOwner.getParkingSlot(),attendant.getVehicle());
+        return attendant;
+    }
+
+    public ParkingLotAttender getMyVehicle(ParkingLotAttender attendant)
+    {
+        if(vehicleMap.containsValue(attendant.getVehicle()))
+            return attendant;
+        throw new ParkinLotException(ParkinLotException.ExceptionType.NO_SUCH_ATTENDANT, "No Attendant Found");
+
     }
 
     /** to check vehicle is parked */
