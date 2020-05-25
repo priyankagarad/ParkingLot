@@ -1,4 +1,4 @@
-package com.bl.parkinglot;
+package com.bl.parkinglot.model;
 public class AirportSecurity {
     private boolean isFullCapacity;
 

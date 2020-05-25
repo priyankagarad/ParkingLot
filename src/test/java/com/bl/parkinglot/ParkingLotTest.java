@@ -1,4 +1,8 @@
 package com.bl.parkinglot;
+import com.bl.parkinglot.exception.ParkinLotException;
+import com.bl.parkinglot.model.AirportSecurity;
+import com.bl.parkinglot.model.ParkingLotOwer;
+import com.bl.parkinglot.service.ParkingLotSystem;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,36 +17,23 @@ public class ParkingLotTest {
     }
 
     @Test
-    public void givenVehicle_whenParked_shouldReturnTrue() {
-        try {
+    public void givenVehicle_whenParked_shouldReturnTrue(){
             parkingLot.parked(vehicle);
             boolean isParked = parkingLot.isVehicleParked(vehicle);
             Assert.assertTrue(isParked);
-        } catch (ParkinLotException e) {
-            e.printStackTrace();
-        }
     }
 
     @Test
     public void givenVehicle_whenAlReadyParked_shouldReturnTrue() {
-        try {
             parkingLot.parked(vehicle);
             boolean isParked = parkingLot.UnPark(vehicle);
-            Assert.assertTrue(isParked);
-        } catch (ParkinLotException e) {
-            e.printStackTrace();
-        }
+            Assert.assertTrue(isParked);////
     }
 
     @Test
     public void givenVehicle_whenUnparked_shouldReturnTrue() {
-        try {
             parkingLot.parked(vehicle);
             boolean isUnparked = parkingLot.UnPark(vehicle);
-            Assert.assertEquals(true, isUnparked);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     @Test
@@ -84,8 +75,9 @@ public class ParkingLotTest {
             Assert.assertFalse(capacityFull);
         }
     }
+
     @Test
-    public void givenParkingLot_whenSpaceIsAvailableAfterFull_shouldReturnTrue() {
+    public void givenParkingLot_whenSpaceIsAvailableAfterFull_shouldReturn() {
         ParkingLotOwer owner = new ParkingLotOwer();
         Object vehicle1 = new Object();
         parkingLot.registerParkingLotObserver(owner);
@@ -100,14 +92,13 @@ public class ParkingLotTest {
     }
 
     @Test
-    public void givenParkingLot_whenParkingAttendantToParkCar_shouldReturnTrue() {
+    public void givenVehicleNotPresentInParkingLot_WhenUnPark_ThenThrowException() {
+        Object vehicle1 = null;
         try {
-            ParkingLotOwer owner = new ParkingLotOwer();
-            parkingLot.registerParkingLotObserver(owner);
             parkingLot.parked(vehicle);
-            boolean unParkVehicle = parkingLot.UnPark(vehicle);
-            Assert.assertTrue(unParkVehicle);
+            boolean result=parkingLot.UnPark(vehicle1);;
         } catch (ParkinLotException e) {
+            Assert.assertEquals("This vehicle not park  parking lot",e.getMessage());
         }
     }
 }

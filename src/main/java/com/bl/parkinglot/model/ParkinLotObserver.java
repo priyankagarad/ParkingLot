@@ -1,9 +1,9 @@
-package com.bl.parkinglot;
-
+package com.bl.parkinglot.model;
 public interface ParkinLotObserver {
     boolean isCapacityFull();
-
     void isParkingEmpty();
+
+    void parkingAvailable();
 }
 
 
