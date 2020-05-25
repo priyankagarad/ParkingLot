@@ -74,7 +74,6 @@ public class ParkingLotSystem
         if(vehicleMap.containsValue(attendant.getVehicle()))
             return attendant;
         throw new ParkinLotException(ParkinLotException.ExceptionType.NO_SUCH_ATTENDANT, "No Attendant Found");
-
     }
 
     /** to check vehicle is parked */

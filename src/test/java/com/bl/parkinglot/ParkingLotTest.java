@@ -118,6 +118,7 @@ public class ParkingLotTest {
     @Test
     public void givenParkingLot_WhenParkingFullthenAttender_ShouldThrowException() {
         ParkingLotOwer owner = new ParkingLotOwer();
+        parkingLot.setCapacity(3);
         try {
             parkingLot.registerParkingLotObserver(owner);
             ParkingLotAttender parkingLotAttender1=new ParkingLotAttender(vehicle);
@@ -128,6 +129,21 @@ public class ParkingLotTest {
             parkingLot.getParkingLotAttendant(parkingLotAttender3);
         } catch (ParkinLotException e) {
             Assert.assertEquals("PARKING_IS_FULL",e.getMessage());
+        }
+    }
+
+    @Test
+    public void givenParkingLot_ShouldReturnAttendant()
+    {
+        ParkingLotOwer owner = new ParkingLotOwer();
+        try {
+            parkingLot.registerParkingLotObserver(owner);
+            ParkingLotAttender parkingLotAttender=new ParkingLotAttender(vehicle);
+            parkingLot.getParkingLotAttendant(parkingLotAttender);
+            ParkingLotAttender myAttendant= parkingLot.getMyVehicle(parkingLotAttender);
+            Assert.assertEquals(parkingLotAttender,myAttendant);
+        } catch (ParkinLotException e) {
+            e.printStackTrace();
         }
     }
 }
