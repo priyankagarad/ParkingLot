@@ -114,4 +114,20 @@ public class ParkingLotTest {
         } catch (ParkinLotException e) {
         }
     }
+
+    @Test
+    public void givenParkingLot_WhenParkingFullthenAttender_ShouldThrowException() {
+        ParkingLotOwer owner = new ParkingLotOwer();
+        try {
+            parkingLot.registerParkingLotObserver(owner);
+            ParkingLotAttender parkingLotAttender1=new ParkingLotAttender(vehicle);
+            ParkingLotAttender parkingLotAttender2=new ParkingLotAttender(vehicle);
+            ParkingLotAttender parkingLotAttender3=new ParkingLotAttender(vehicle);
+            parkingLot.getParkingLotAttendant(parkingLotAttender1);
+            parkingLot.getParkingLotAttendant(parkingLotAttender2);
+            parkingLot.getParkingLotAttendant(parkingLotAttender3);
+        } catch (ParkinLotException e) {
+            Assert.assertEquals("PARKING_IS_FULL",e.getMessage());
+        }
+    }
 }
