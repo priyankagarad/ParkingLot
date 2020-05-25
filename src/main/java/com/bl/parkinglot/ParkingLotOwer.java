@@ -7,8 +7,8 @@ public class ParkingLotOwer implements ParkinLotObserver {
     }
 
     @Override
-    public void capacityFull() {
-        isFullCapacity=true;
+    public void isParkingEmpty() {
+
     }
 
 }

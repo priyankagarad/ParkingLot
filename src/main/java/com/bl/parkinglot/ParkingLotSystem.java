@@ -3,34 +3,32 @@ import java.util.ArrayList;
 import java.util.List;
 public class ParkingLotSystem
 {
-    Object vehicle;
     private int actualCapacity;
-    private int currentCapacity;
-    private ParkingLotOwer owner;
-    private AirportSecurity security;
+    private List<Object> vehicleList;
     private List<ParkinLotObserver> observerList;
+    private AirportSecurity security;
 
-    public ParkingLotSystem(int capacity){
-        this.observerList=new ArrayList<>();
-        this.currentCapacity=0;
-        this.actualCapacity=capacity;
+    public ParkingLotSystem(int capacity) {
+        this.observerList = new ArrayList<>();
+        this.vehicleList = new ArrayList<>();
+        this.actualCapacity = capacity;
     }
 
-    public void  parked(Object vehicle) throws Exception {
-        if (this.currentCapacity == this.actualCapacity){
-            for (ParkinLotObserver observer:observerList){
-                observer.capacityFull();
-            }
-            owner.capacityFull();
-            security.capacityFull();
-            throw new Exception("parking  Lot is full");
+    public void parked(Object vehicle) throws ParkinLotException {
+        if (isVehicleParked( vehicle )) {
+            throw new ParkinLotException( ParkinLotException.ExceptionType.ALREADY_PARKED,"already parked" );
         }
-        this.currentCapacity++;
-        this.vehicle=vehicle;
+        if (this.vehicleList.size() == actualCapacity) {
+            for (ParkinLotObserver observer : observerList) {
+                observer.isCapacityFull();
+            }
+            throw new ParkinLotException( ParkinLotException.ExceptionType.PARKING_IS_FULL,"Parking is full");
+        }
+        this.vehicleList.add( vehicle );
     }
 
     public boolean isVehicleParked(Object vehicle){
-        if(this.vehicle.equals(vehicle))
+        if(this.vehicleList.contains(vehicle))
             return true;
         return false;
     }
@@ -38,14 +36,17 @@ public class ParkingLotSystem
     public boolean UnPark(Object vehicle) {
         if (vehicle==null)
             return false;
-        if (this.vehicle .equals(vehicle)) {
-            this.vehicle = null;
+        if (this.vehicleList.contains(vehicle)) {
+            this.vehicleList.remove(vehicle);
+            for(ParkinLotObserver observer:observerList)
+                observer.isParkingEmpty();
             return true;
         }
-        return false;
+        throw new ParkinLotException(ParkinLotException.ExceptionType.VEHICLE_NOT_FOUND, "Vehicle Is Not In Parking");
     }
 
-    public void registerParkinLotObserver(ParkinLotObserver observer) {
+
+    public void registerParkingLotObserver(ParkinLotObserver observer) {
         this.observerList.add(observer);
     }
 
@@ -56,6 +57,4 @@ public class ParkingLotSystem
     public void setCapacity(int capacity) {
         this.actualCapacity=capacity;
     }
-
-
 }

@@ -5,9 +5,5 @@ public class AirportSecurity {
     public boolean capacityFull() {
         return this.isFullCapacity;
     }
-
-  /*  public boolean isCapacityFull() {
-        return this.isFullCapacity;
-    }*/
 }
 
