@@ -7,8 +7,10 @@ import com.bl.parkinglot.service.ParkingLotSystem;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-public class ParkingLotTest
-{
+
+import java.util.ArrayList;
+
+public class ParkingLotTest {
     ParkingLotSystem parkingLot;
     AirportSecurity airportSecurity;
     ParkingLotOwer owner;
@@ -25,32 +27,32 @@ public class ParkingLotTest
     }
 
     @Test
-    public void givenVehicle_whenParked_shouldReturnTrue(){
-            parkingLot.parked(car);
-            boolean isParked = parkingLot.isVehicleParked(car);
-            Assert.assertTrue(isParked);
+    public void givenVehicle_whenParked_shouldReturnTrue() {
+        parkingLot.parked(car);
+        boolean isParked = parkingLot.isVehicleParked(car);
+        Assert.assertTrue(isParked);
     }
 
     @Test
     public void givenVehicle_whenAlReadyParked_shouldReturnTrue() {
-            parkingLot.parked(car);
-            boolean isParked = parkingLot.UnPark(car);
-            Assert.assertTrue(isParked);////
+        parkingLot.parked(car);
+        boolean isParked = parkingLot.UnPark(car);
+        Assert.assertTrue(isParked);////
     }
 
     @Test
     public void givenVehicle_whenUnparked_shouldReturnTrue() {
-            parkingLot.parked(car);
-            boolean isUnparked = parkingLot.UnPark(car);
-            Assert.assertTrue(isUnparked);
+        parkingLot.parked(car);
+        boolean isUnparked = parkingLot.UnPark(car);
+        Assert.assertTrue(isUnparked);
     }
 
     @Test
     public void givenVehicleNotPresentInParkingLot_WhenUnPark_ThenThrowException() {
         try {
             parkingLot.parked(car);
-            boolean result=parkingLot.UnPark(car);
-            Assert.assertFalse("vehicle is not Park in parking lot",false);
+            boolean result = parkingLot.UnPark(car);
+            Assert.assertFalse("vehicle is not Park in parking lot", false);
         } catch (ParkinLotException e) {
         }
     }
@@ -88,7 +90,7 @@ public class ParkingLotTest
             parkingLot.parked(new Object());
         } catch (ParkinLotException e) {
             boolean capacityFull = airportSecurity.capacityFull();
-            Assert.assertFalse(capacityFull);
+            Assert.assertTrue(capacityFull);
         }
     }
 
@@ -109,9 +111,9 @@ public class ParkingLotTest
     public void givenParkingLotSlot_WhenVehicleCome_ShouldAttenderVehicle() {
         try {
             parkingLot.registerParkingLotObserver(owner);
-            ParkingLotAttender parkingLotAttender=new ParkingLotAttender(car);
-            ParkingLotAttender attender=parkingLot.getParkingLotAttendant(parkingLotAttender);
-            Assert.assertEquals(attender,parkingLotAttender);
+            ParkingLotAttender parkingLotAttender = new ParkingLotAttender(car);
+            ParkingLotAttender attender = parkingLot.getParkingLotAttendant(parkingLotAttender);
+            Assert.assertEquals(attender, parkingLotAttender);
         } catch (ParkinLotException e) {
         }
     }
@@ -121,12 +123,12 @@ public class ParkingLotTest
         parkingLot.setCapacity(2);
         try {
             parkingLot.registerParkingLotObserver(owner);
-            ParkingLotAttender attender1=new ParkingLotAttender(car);
-            ParkingLotAttender attender2=new ParkingLotAttender(car);
+            ParkingLotAttender attender1 = new ParkingLotAttender(car);
+            ParkingLotAttender attender2 = new ParkingLotAttender(car);
             parkingLot.getParkingLotAttendant(attender1);
             parkingLot.getParkingLotAttendant(attender2);
         } catch (ParkinLotException e) {
-            Assert.assertEquals("PARKING_IS_FULL",e.getMessage());
+            Assert.assertEquals("PARKING_IS_FULL", e.getMessage());
         }
     }
 
@@ -134,12 +136,12 @@ public class ParkingLotTest
     public void givenParkingLot_WhenAttenderNotAvailable_shouldThrowException() {
         try {
             parkingLot.registerParkingLotObserver(owner);
-            ParkingLotAttender parkingLotAttender=new ParkingLotAttender(car);
+            ParkingLotAttender parkingLotAttender = new ParkingLotAttender(car);
             parkingLot.getParkingLotAttendant(parkingLotAttender);
-            ParkingLotAttender myAttendant= parkingLot.getVehicle(new ParkingLotAttender(new Object()));
-            Assert.assertEquals(parkingLotAttender,myAttendant);
+            ParkingLotAttender myAttendant = parkingLot.getVehicle(new ParkingLotAttender(new Object()));
+            Assert.assertEquals(parkingLotAttender, myAttendant);
         } catch (ParkinLotException e) {
-            Assert.assertEquals("No Attendant Found",e.getMessage());
+            Assert.assertEquals("No Attendant Found", e.getMessage());
         }
     }
 
@@ -147,12 +149,28 @@ public class ParkingLotTest
     public void givenParkingLot_whenVehicleCome_ShouldReturnAttendant() {
         try {
             parkingLot.registerParkingLotObserver(owner);
-            ParkingLotAttender parkingLotAttender=new ParkingLotAttender(car);
+            ParkingLotAttender parkingLotAttender = new ParkingLotAttender(car);
             parkingLot.getParkingLotAttendant(parkingLotAttender);
-            ParkingLotAttender myAttendant= parkingLot.getVehicle(parkingLotAttender);
-            Assert.assertEquals(parkingLotAttender,myAttendant);
+            ParkingLotAttender myAttendant = parkingLot.getVehicle(parkingLotAttender);
+            Assert.assertEquals(parkingLotAttender, myAttendant);
         } catch (ParkinLotException e) {
             e.printStackTrace();
         }
+    }
+
+    @Test
+    public void givenParkingLotSystem_WhenCarFound_ShouldReturnCarSlot() {
+        try {
+            parkingLot.setCapacity(5);
+            parkingLot.initializeParkingSlot();
+            ArrayList<Integer> slot = parkingLot.getSlot();
+            parkingLot.isParkVehicles(slot.get(0), new Object());
+            parkingLot.isParkVehicles(slot.get(1), car);
+            int slotNumber = parkingLot.findVehicle(this.car);
+            Assert.assertEquals(1, slotNumber);
+        } catch (ParkinLotException e) {
+            e.printStackTrace();
+        }
+
     }
 }

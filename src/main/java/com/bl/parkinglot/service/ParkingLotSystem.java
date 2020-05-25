@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.IntStream;
 
 public class ParkingLotSystem
 {
@@ -49,7 +50,6 @@ public class ParkingLotSystem
             throw new ParkinLotException( ParkinLotException.ExceptionType.PARKING_IS_FULL,"Parking is full");
         }
             this.vehicleList.add(car);
-
     }
 
     public void parkVehicle(int slot,Object car) {
@@ -75,6 +75,38 @@ public class ParkingLotSystem
         throw new ParkinLotException(ParkinLotException.ExceptionType.NO_SUCH_ATTENDANT, "No Attendant Found");
     }
 
+
+    public int initializeParkingSlot()
+    {
+        IntStream.range(0,this.actualCapacity).forEach(slots->vehicleList.add(null));
+        return vehicleList.size();
+    }
+
+    public void isParkVehicles(int slot,Object car)
+    {
+        if(isVehicleParked(car))
+            throw new ParkinLotException(ParkinLotException.ExceptionType.PARKING_IS_FULL, "PARKING_IS_FULL");
+        this.vehicleList.set(slot,car);
+    }
+
+    public int findVehicle(Object car)
+    {
+        if(this.vehicleList.contains(car))
+            return this.vehicleList.indexOf(car);
+        throw new ParkinLotException(ParkinLotException.ExceptionType.VEHICLE_NOT_FOUND, "Vehicle Is Not In Parking");
+    }
+
+    public ArrayList getSlot()
+    {
+        ArrayList<Integer>slots=new ArrayList<>();
+        for(int slot=0;slot<this.actualCapacity;slot++)
+        {
+            if(this.vehicleList.get(slot)==null)
+                slots.add(slot);
+        }
+        return slots;
+    }
+
     /** to check vehicle is parked */
     public boolean isVehicleParked(Object car){
         if(this.vehicleList.contains(car))
@@ -88,8 +120,6 @@ public class ParkingLotSystem
             return false;
         if (this.vehicleList.contains(car)) {
             this.vehicleList.remove(car);
-           // observer.parkingAvailable();
-
             for(ParkinLotObserver observer:observerList)
                 observer.isParkingEmpty();
             return true;
