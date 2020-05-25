@@ -9,14 +9,18 @@ import org.junit.Before;
 import org.junit.Test;
 public class ParkingLotTest {
     ParkingLotSystem parkingLot;
+    AirportSecurity airportSecurity;
     ParkingLotOwer owner;
     Object vehicle;
+    Object vehicle1;
 
     @Before
     public void setUp() {
         parkingLot = new ParkingLotSystem(1);
+        AirportSecurity airportSecurity = new AirportSecurity();
         owner = new ParkingLotOwer();
         vehicle = new Object();
+        vehicle1 = new Object();
     }
 
     @Test
@@ -37,11 +41,11 @@ public class ParkingLotTest {
     public void givenVehicle_whenUnparked_shouldReturnTrue() {
             parkingLot.parked(vehicle);
             boolean isUnparked = parkingLot.UnPark(vehicle);
+            Assert.assertTrue(isUnparked);
     }
 
     @Test
     public void givenVehicleNotPresentInParkingLot_WhenUnPark_ThenThrowException() {
-        Object vehicle1 = null;
         try {
             parkingLot.parked(vehicle);
             boolean result=parkingLot.UnPark(vehicle1);
@@ -52,7 +56,6 @@ public class ParkingLotTest {
 
     @Test
     public void giveParkingLot_whenFull_shouldInformOwner() {
-        ParkingLotOwer owner = new ParkingLotOwer();
         parkingLot.registerParkingLotObserver(owner);
         try {
             parkingLot.parked(vehicle);
@@ -65,13 +68,12 @@ public class ParkingLotTest {
 
     @Test
     public void givenParkingLot_whenCapacityIS2_shouldAbleToPark2Vehicle() {
-        Object vehicle2 = new Object();
         parkingLot.setCapacity(2);
         try {
             parkingLot.parked(vehicle);
-            parkingLot.parked(vehicle2);
-            boolean isParked = parkingLot.isVehicleParked(vehicle2);
-            boolean isParked1 = parkingLot.isVehicleParked(vehicle2);
+            parkingLot.parked(vehicle1);
+            boolean isParked = parkingLot.isVehicleParked(vehicle1);
+            boolean isParked1 = parkingLot.isVehicleParked(vehicle1);
             Assert.assertTrue(isParked && isParked1);
         } catch (ParkinLotException e) {
         }
@@ -79,7 +81,6 @@ public class ParkingLotTest {
 
     @Test
     public void givenParkingLot_whenFull_shouldInformSecurity() {
-        AirportSecurity airportSecurity = new AirportSecurity();
         parkingLot.registerSecurity(airportSecurity);
         try {
             parkingLot.parked(vehicle);
@@ -92,8 +93,6 @@ public class ParkingLotTest {
 
     @Test
     public void givenParkingLot_whenSpaceIsAvailableAfterFull_shouldReturn() {
-        ParkingLotOwer owner = new ParkingLotOwer();
-        Object vehicle1 = new Object();
         parkingLot.registerParkingLotObserver(owner);
         try {
             parkingLot.parked(vehicle);
@@ -107,7 +106,6 @@ public class ParkingLotTest {
 
     @Test
     public void givenParkingLotSlot_WhenVehicleCome_ShouldAttenderVehicle() {
-        ParkingLotOwer owner = new ParkingLotOwer();
         try {
             parkingLot.registerParkingLotObserver(owner);
             ParkingLotAttender parkingLotAttender=new ParkingLotAttender(vehicle);
@@ -119,7 +117,6 @@ public class ParkingLotTest {
 
     @Test
     public void givenParkingLot_WhenParkingFullThenAttender_ShouldThrowException() {
-        ParkingLotOwer owner = new ParkingLotOwer();
         parkingLot.setCapacity(2);
         try {
             parkingLot.registerParkingLotObserver(owner);
@@ -133,8 +130,7 @@ public class ParkingLotTest {
     }
 
     @Test
-    public void givenParkingLot_WhenAttenderNotAvailable_shouldThrowException()
-    {
+    public void givenParkingLot_WhenAttenderNotAvailable_shouldThrowException() {
         try {
             parkingLot.registerParkingLotObserver(owner);
             ParkingLotAttender parkingLotAttender=new ParkingLotAttender(vehicle);
@@ -147,9 +143,7 @@ public class ParkingLotTest {
     }
 
     @Test
-    public void givenParkingLot_whenVehicleCome_ShouldReturnAttendant()
-    {
-        ParkingLotOwer owner = new ParkingLotOwer();
+    public void givenParkingLot_whenVehicleCome_ShouldReturnAttendant() {
         try {
             parkingLot.registerParkingLotObserver(owner);
             ParkingLotAttender parkingLotAttender=new ParkingLotAttender(vehicle);
