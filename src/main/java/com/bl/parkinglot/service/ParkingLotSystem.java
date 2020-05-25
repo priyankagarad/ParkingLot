@@ -8,7 +8,6 @@ import com.bl.parkinglot.exception.ParkinLotException;
 import com.bl.parkinglot.model.AirportSecurity;
 import com.bl.parkinglot.model.ParkinLotObserver;
 import com.bl.parkinglot.model.ParkingLotOwer;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -39,8 +38,8 @@ public class ParkingLotSystem
     }
 
     /** To voidPark The Vehicle */
-    public void parked(Object vehicle) throws ParkinLotException {
-        if (isVehicleParked( vehicle )) {
+    public void parked(Object car) throws ParkinLotException {
+        if (isVehicleParked( car )) {
             throw new ParkinLotException( ParkinLotException.ExceptionType.ALREADY_PARKED,"already parked" );
         }
         if (this.vehicleList.size() == actualCapacity) {
@@ -49,17 +48,17 @@ public class ParkingLotSystem
             }
             throw new ParkinLotException( ParkinLotException.ExceptionType.PARKING_IS_FULL,"Parking is full");
         }
-            this.vehicleList.add(vehicle);
+            this.vehicleList.add(car);
 
     }
 
-    public void parkVehicle(int slot,Object vehicle) {
+    public void parkVehicle(int slot,Object car) {
         if (this.actualCapacity==this.vehicleList.size()) {
             for(ParkinLotObserver parkingOwner:observerList)
                 parkingOwner.isCapacityFull();
             throw new ParkinLotException(ParkinLotException.ExceptionType.PARKING_IS_FULL, "PARKING_IS_FULL");
         }
-        vehicleMap.put(slot,vehicle);
+        vehicleMap.put(slot,car);
     }
 
     public ParkingLotAttender getParkingLotAttendant(ParkingLotAttender attendant)
@@ -69,7 +68,7 @@ public class ParkingLotSystem
         return attendant;
     }
 
-    public ParkingLotAttender getMyVehicle(ParkingLotAttender attendant)
+    public ParkingLotAttender getVehicle(ParkingLotAttender attendant)
     {
         if(vehicleMap.containsValue(attendant.getVehicle()))
             return attendant;
@@ -77,18 +76,18 @@ public class ParkingLotSystem
     }
 
     /** to check vehicle is parked */
-    public boolean isVehicleParked(Object vehicle){
-        if(this.vehicleList.contains(vehicle))
+    public boolean isVehicleParked(Object car){
+        if(this.vehicleList.contains(car))
             return true;
         return false;
     }
 
     /** To unPark the vehicle*/
-    public boolean UnPark(Object vehicle) {
-        if (vehicle==null)
+    public boolean UnPark(Object car) {
+        if (car==null)
             return false;
-        if (this.vehicleList.contains(vehicle)) {
-            this.vehicleList.remove(vehicle);
+        if (this.vehicleList.contains(car)) {
+            this.vehicleList.remove(car);
            // observer.parkingAvailable();
 
             for(ParkinLotObserver observer:observerList)
