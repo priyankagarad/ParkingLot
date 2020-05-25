@@ -9,11 +9,13 @@ import org.junit.Before;
 import org.junit.Test;
 public class ParkingLotTest {
     ParkingLotSystem parkingLot;
+    ParkingLotOwer owner;
     Object vehicle;
 
     @Before
     public void setUp() {
         parkingLot = new ParkingLotSystem(1);
+        owner = new ParkingLotOwer();
         vehicle = new Object();
     }
 
@@ -104,7 +106,7 @@ public class ParkingLotTest {
     }
 
     @Test
-    public void givenParkingLotSlot_WhenCarCome_ShouldAttendermarkCar() {
+    public void givenParkingLotSlot_WhenVehicleCome_ShouldAttenderVehicle() {
         ParkingLotOwer owner = new ParkingLotOwer();
         try {
             parkingLot.registerParkingLotObserver(owner);
@@ -116,24 +118,36 @@ public class ParkingLotTest {
     }
 
     @Test
-    public void givenParkingLot_WhenParkingFullthenAttender_ShouldThrowException() {
+    public void givenParkingLot_WhenParkingFullThenAttender_ShouldThrowException() {
         ParkingLotOwer owner = new ParkingLotOwer();
-        parkingLot.setCapacity(3);
+        parkingLot.setCapacity(2);
         try {
             parkingLot.registerParkingLotObserver(owner);
-            ParkingLotAttender parkingLotAttender1=new ParkingLotAttender(vehicle);
-            ParkingLotAttender parkingLotAttender2=new ParkingLotAttender(vehicle);
-            ParkingLotAttender parkingLotAttender3=new ParkingLotAttender(vehicle);
-            parkingLot.getParkingLotAttendant(parkingLotAttender1);
-            parkingLot.getParkingLotAttendant(parkingLotAttender2);
-            parkingLot.getParkingLotAttendant(parkingLotAttender3);
+            ParkingLotAttender attender1=new ParkingLotAttender(vehicle);
+            ParkingLotAttender attender2=new ParkingLotAttender(vehicle);
+            parkingLot.getParkingLotAttendant(attender1);
+            parkingLot.getParkingLotAttendant(attender2);
         } catch (ParkinLotException e) {
             Assert.assertEquals("PARKING_IS_FULL",e.getMessage());
         }
     }
 
     @Test
-    public void givenParkingLot_ShouldReturnAttendant()
+    public void givenParkingLot_WhenAttenderNotAvailable_shouldThrowException()
+    {
+        try {
+            parkingLot.registerParkingLotObserver(owner);
+            ParkingLotAttender parkingLotAttender=new ParkingLotAttender(vehicle);
+            parkingLot.getParkingLotAttendant(parkingLotAttender);
+            ParkingLotAttender myAttendant= parkingLot.getMyVehicle(new ParkingLotAttender(new Object()));
+            Assert.assertEquals(parkingLotAttender,myAttendant);
+        } catch (ParkinLotException e) {
+            Assert.assertEquals("No Attendant Found",e.getMessage());
+        }
+    }
+
+    @Test
+    public void givenParkingLot_whenVehicleCome_ShouldReturnAttendant()
     {
         ParkingLotOwer owner = new ParkingLotOwer();
         try {
