@@ -1,5 +1,6 @@
 package com.bl.parkinglot;
 import com.bl.parkinglot.exception.ParkingLotException;
+import com.bl.parkinglot.model.Owner;
 import com.bl.parkinglot.model.VehiclePOJO;
 import com.bl.parkinglot.service.ParkingLotSystem;
 import org.junit.Assert;
@@ -113,4 +114,4 @@ public class ParkingLotTest {
         } catch (ParkingLotException e) {
         }
     }
-}
+}}
