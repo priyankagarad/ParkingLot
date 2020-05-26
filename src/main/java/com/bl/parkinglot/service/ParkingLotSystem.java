@@ -4,141 +4,52 @@
  * Date:24/5/2020
  ********************************************************************************************************************/
 package com.bl.parkinglot.service;
-import com.bl.parkinglot.exception.ParkinLotException;
+import com.bl.parkinglot.exception.ParkingLotException;
 import com.bl.parkinglot.model.AirportSecurity;
-import com.bl.parkinglot.model.ParkinLotObserver;
-import com.bl.parkinglot.model.ParkingLotOwer;
+import com.bl.parkinglot.model.Owner;
+import com.bl.parkinglot.model.VehiclePOJO;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.IntStream;
+import java.util.Set;
+public class ParkingLotSystem {
+    LinkedHashMap<String,Object> parkingLot = new LinkedHashMap<String, Object>();
+    AirportSecurity airportSecurity = new AirportSecurity();
 
-public class ParkingLotSystem
-{
-    /**+
-     * @param:vehicleList: vehicleList to store The Number of vehicle
-     * @observerList:observerList Store the List of observer
-     */
-    private int actualCapacity;
-    private List<Object> vehicleList;
-    private List<ParkinLotObserver> observerList;
-    Map<Integer,Object> vehicleMap=new HashMap();
-
-    private AirportSecurity security;
-    ParkinLotObserver observer;
-
-    /**+
-     * @purpose:set the capacity
-     * @param :capacity
-     */
-    public ParkingLotSystem(int capacity) {
-        this.observerList = new ArrayList<>();
-        this.vehicleList = new ArrayList<>();
-        this.actualCapacity = capacity;
-    }
-
-    /** To voidPark The Vehicle */
-    public void parked(Object car) throws ParkinLotException {
-        if (isVehicleParked( car )) {
-            throw new ParkinLotException( ParkinLotException.ExceptionType.ALREADY_PARKED,"already parked" );
+    public String park(VehiclePOJO vehicle) throws  ParkingLotException {
+        if (parkingLot.containsKey(vehicle.getVehicleNumber()))
+            throw new ParkingLotException(ParkingLotException.MyexceptionType.VEHICLE_ALREADY_PARK,"This vehicle is already park");
+        if (parkingLot.size()%2==0 && parkingLot.size() != 0) {
+            parkingLot.put(vehicle.getVehicleNumber(),vehicle);
+            airportSecurity.setParkingSlotFullOrNot("parking lot is full");
+            return "parking lot is full";
+        }else {
+            parkingLot.put(vehicle.getVehicleNumber(),vehicle);
+            return "record Insert";
         }
-        if (this.vehicleList.size() == actualCapacity) {
-            for (ParkinLotObserver observer : observerList) {
-                observer.isCapacityFull();
-            }
-            throw new ParkinLotException( ParkinLotException.ExceptionType.PARKING_IS_FULL,"Parking is full");
-        }
-            this.vehicleList.add(car);
     }
 
-    public void parkVehicle(int slot,Object car) {
-        if (this.actualCapacity==this.vehicleList.size()) {
-            for(ParkinLotObserver parkingOwner:observerList)
-                parkingOwner.isCapacityFull();
-            throw new ParkinLotException(ParkinLotException.ExceptionType.PARKING_IS_FULL, "PARKING_IS_FULL");
-        }
-        vehicleMap.put(slot,car);
-    }
-
-    public ParkingLotAttender getParkingLotAttendant(ParkingLotAttender attendant)
-    {
-        ParkingLotOwer parkingOwner= (ParkingLotOwer)observerList.get(0);
-        parkVehicle(parkingOwner.getParkingSlot(),attendant.getVehicle());
-        return attendant;
-    }
-
-    public ParkingLotAttender getVehicle(ParkingLotAttender attendant)
-    {
-        if(vehicleMap.containsValue(attendant.getVehicle()))
-            return attendant;
-        throw new ParkinLotException(ParkinLotException.ExceptionType.NO_SUCH_ATTENDANT, "No Attendant Found");
-    }
-
-
-    public int initializeParkingSlot()
-    {
-        IntStream.range(0,this.actualCapacity).forEach(slots->vehicleList.add(null));
-        return vehicleList.size();
-    }
-
-    public void isParkVehicles(int slot,Object car)
-    {
-        if(isVehicleParked(car))
-            throw new ParkinLotException(ParkinLotException.ExceptionType.PARKING_IS_FULL, "PARKING_IS_FULL");
-        this.vehicleList.set(slot,car);
-    }
-
-    public int findVehicle(Object car)
-    {
-        if(this.vehicleList.contains(car))
-            return this.vehicleList.indexOf(car);
-        throw new ParkinLotException(ParkinLotException.ExceptionType.VEHICLE_NOT_FOUND, "Vehicle Is Not In Parking");
-    }
-
-    public ArrayList getSlot()
-    {
-        ArrayList<Integer>slots=new ArrayList<>();
-        for(int slot=0;slot<this.actualCapacity;slot++)
-        {
-            if(this.vehicleList.get(slot)==null)
-                slots.add(slot);
-        }
-        return slots;
-    }
-
-    /** to check vehicle is parked */
-    public boolean isVehicleParked(Object car){
-        if(this.vehicleList.contains(car))
+    public boolean isVehiclePark(VehiclePOJO vehicle) {
+        if (parkingLot.containsKey(vehicle.getVehicleNumber()))
             return true;
         return false;
     }
 
-    /** To unPark the vehicle*/
-    public boolean UnPark(Object car) {
-        if (car==null)
-            return false;
-        if (this.vehicleList.contains(car)) {
-            this.vehicleList.remove(car);
-            for(ParkinLotObserver observer:observerList)
-                observer.isParkingEmpty();
-            return true;
+    public String unPark(VehiclePOJO vehicle) throws ParkingLotException {
+        if (parkingLot.containsKey(vehicle.getVehicleNumber())) {
+            Set<String> keys = parkingLot.keySet();
+            List<String> listKeys = new ArrayList<String>( keys );
+            int lotPosition = listKeys.indexOf(vehicle.getVehicleNumber());
+            parkingLot.remove(vehicle.getVehicleNumber());
+            if (parkingLot.size() < 3) {
+                new Owner().setParkingFullOrNot("parking lot space available "+(lotPosition+1));
+                return "space available";
+            }
+            return "unpark";
         }
-        throw new ParkinLotException(ParkinLotException.ExceptionType.VEHICLE_NOT_FOUND, "Vehicle Is Not In Parking");
-    }
-
-    /** To add observer to list */
-    public void registerParkingLotObserver(ParkinLotObserver observer) {
-        this.observerList.add(observer);
-    }
-
-    /** to register for parking */
-    public void registerSecurity(AirportSecurity airportSecurity) {
-        this.security=airportSecurity;
-    }
-
-    /** set the capacity of Vehicle in parking lot*/
-    public void setCapacity(int capacity) {
-        this.actualCapacity=capacity;
+        else{
+            throw new ParkingLotException(ParkingLotException.MyexceptionType.VEHICLE_NOT_PARK,
+                    "This vehicle not park in my parking lot");
+        }
     }
 }

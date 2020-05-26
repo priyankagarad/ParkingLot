@@ -1,10 +1,12 @@
 package com.bl.parkinglot.model;
 public class AirportSecurity {
-    private boolean isFullCapacity;
+    private String parkingSlotFullOrNot;
 
-    public boolean capacityFull() {
-        return this.isFullCapacity;
+    public void setParkingSlotFullOrNot(String parkingSlotFullOrNot) {
+        this.parkingSlotFullOrNot = parkingSlotFullOrNot;
+    }
+
+    public String getParkingSlotFullOrNot() {
+        return parkingSlotFullOrNot;
     }
 }
-
-
