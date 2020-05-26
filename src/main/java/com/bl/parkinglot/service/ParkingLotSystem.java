@@ -6,7 +6,6 @@
 package com.bl.parkinglot.service;
 import com.bl.parkinglot.Observer;
 import com.bl.parkinglot.exception.ParkingLotException;
-import com.bl.parkinglot.model.AirportSecurity;
 import com.bl.parkinglot.model.Owner;
 import com.bl.parkinglot.model.VehiclePOJO;
 import java.util.ArrayList;
@@ -16,8 +15,7 @@ import java.util.Set;
 public class ParkingLotSystem {
     LinkedHashMap<String,Object> parkingLot = new LinkedHashMap<String, Object>();
     private List<Observer> observableList = new ArrayList<>();
-    AirportSecurity airportSecurity = new AirportSecurity();
-    Owner owner = new Owner();
+    Owner owner=new Owner();
     private String isFull;
 
     public void addObserver(Observer observable) {
@@ -31,20 +29,26 @@ public class ParkingLotSystem {
         }
     }
 
-    public String park(VehiclePOJO vehicle) throws  ParkingLotException {
-        if (parkingLot.containsKey(vehicle.getVehicleNumber()))
-            throw new ParkingLotException(ParkingLotException.MyexceptionType.VEHICLE_ALREADY_PARK,"This vehicle already park");
-        parkingLot.put(vehicle.getVehicleNumber(),vehicle);
-        setStatus("this vehicle charge Rs.10");
-        if (parkingLot.size()%3==0 && parkingLot.size() != 0)
-            setStatus("Full");
-        return "park vehicle";
+        public String park(VehiclePOJO vehicle) throws ParkingLotException {
+            if (parkingLot.containsKey(vehicle))
+                throw new ParkingLotException(ParkingLotException.MyexceptionType.VEHICLE_ALREADY_PARK,"This vehicle already park");
+            parkingLot.put(vehicle.getVehicleNumber(),vehicle);
+            setStatus("this vehicle charge Rs.10");
+            if (parkingLot.size()%3==0 && parkingLot.size() != 0)
+                setStatus("Full");
+            return "park vehicle";
+        }
+
+    public int vehicleParkLotNumber(VehiclePOJO vehicle){
+        Set<String> keys = parkingLot.keySet();
+        List<String> listKeys = new ArrayList<String>( keys );
+        return listKeys.indexOf(vehicle.getVehicleNumber());
     }
 
     // Check Vehicle is present or not
     public String  isVehiclePark(VehiclePOJO vehicle) throws ParkingLotException {
-        if (parkingLot.containsKey(vehicle.getVehicleNumber())) {
-            int lotPosition = vehicleParkLotNumber(vehicle);
+        if (parkingLot.containsKey(.getVehicleNumber()) {
+            int lotPosition = vehicleParkLotNumber();
             return "vehicle park in lot number "+(lotPosition+1);
         }
         else {
@@ -52,15 +56,15 @@ public class ParkingLotSystem {
                     "This vehicle not park in my parking lot");
         }
     }
-    public int vehicleParkLotNumber(VehiclePOJO vehicle){
+    public int vehicleParkLotNumber(String vehicle){
         Set<String> keys = parkingLot.keySet();
         List<String> listKeys = new ArrayList<String>( keys );
-        return listKeys.indexOf(vehicle.getVehicleNumber());
+        return listKeys.indexOf(.getVehicleNumber());
     }
     // un park vehicle
-    public String unPark(VehiclePOJO vehicle) throws ParkingLotException {
+    public String unPark(VehiclePOJO vehicle ) throws ParkingLotException {
         if (parkingLot.containsKey(vehicle.getVehicleNumber())) {
-            int lotPosition = vehicleParkLotNumber(vehicle);
+            int lotPosition = vehicleParkLotNumber("MH4R4548");
             parkingLot.remove(vehicle.getVehicleNumber());
             if (parkingLot.size() < 3)
                 setStatus("Have Space lot number "+(lotPosition+1));

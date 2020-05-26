@@ -1,5 +1,6 @@
 package com.bl.parkinglot.model;
-public class AirportSecurity {
+import com.bl.parkinglot.Observer;
+public class AirportSecurity implements Observer {
     private String parkingSlotFullOrNot;
 
     public void setParkingSlotFullOrNot(String parkingSlotFullOrNot) {
@@ -8,5 +9,10 @@ public class AirportSecurity {
 
     public String getParkingSlotFullOrNot() {
         return parkingSlotFullOrNot;
+    }
+
+    @Override
+    public void update(Object status) {
+        this.setParkingSlotFullOrNot((String) status);
     }
 }

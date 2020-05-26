@@ -9,11 +9,13 @@ import org.junit.Test;
 public class ParkingLotTest {
     ParkingLotSystem parkingLot;
     VehiclePOJO vehicle;
+    Owner owner;
 
     @Before
     public void setUp(){
         vehicle = new VehiclePOJO();
         parkingLot = new ParkingLotSystem();
+        owner=new Owner();
     }
 
     @Test
@@ -105,12 +107,10 @@ public class ParkingLotTest {
     @Test
     public void givenFindCar_WhenPark_shouldReturnCarPosition() {
         try {
+            parkingLot.addObserver(owner);
             vehicle.setVehicleNumber("MH4R4545");
             parkingLot.park(vehicle);
-            vehicle.setVehicleNumber("MH4R4547");
-            parkingLot.park(vehicle);
-            boolean result = parkingLot.isVehiclePark(vehicle);
-            Assert.assertEquals(true,result);
+            Assert.assertEquals("this vehicle charge Rs.10",owner.getParkingCharge());
         } catch (ParkingLotException e) {
         }
     }
