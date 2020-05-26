@@ -12,6 +12,8 @@ public class ParkingLotTest {
     ParkingLotSystem parkingLot;
     VehiclePOJO vehicle;
     Owner owner;
+    private int capacity;
+    private int slot;
 
     @Before
     public void setUp(){
@@ -120,4 +122,4 @@ public class ParkingLotTest {
         } catch (ParkingLotException e) {
         }
     }
-}}
+}
