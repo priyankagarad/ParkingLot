@@ -13,7 +13,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Set;
 public class ParkingLotSystem {
-    LinkedHashMap<String,Object> parkingLot = new LinkedHashMap<String, Object>();
+    LinkedHashMap<Integer,Object> parkingLot = new LinkedHashMap<Integer, Object>();
     private List<Observer> observableList = new ArrayList<>();
     Owner owner=new Owner();
     private String isFull;

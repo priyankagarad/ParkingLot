@@ -1,5 +1,6 @@
 package com.bl.parkinglot;
 import com.bl.parkinglot.exception.ParkingLotException;
+import com.bl.parkinglot.model.AirportSecurity;
 import com.bl.parkinglot.model.Owner;
 import com.bl.parkinglot.model.VehiclePOJO;
 import com.bl.parkinglot.service.ParkingLotSystem;
@@ -7,6 +8,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 public class ParkingLotTest {
+    AirportSecurity airportSecurity;
     ParkingLotSystem parkingLot;
     VehiclePOJO vehicle;
     Owner owner;
@@ -15,17 +17,19 @@ public class ParkingLotTest {
     public void setUp(){
         vehicle = new VehiclePOJO();
         parkingLot = new ParkingLotSystem();
+        airportSecurity=new AirportSecurity();
         owner=new Owner();
     }
 
     @Test
-    public void givenVehicle_WhenPark_shouldReturnTrue() {
+    public void givenVehicle_WhenParke_ThenReturnTrue() {
         try {
             vehicle.setVehicleNumber("MH4R4545");
-            parkingLot.park(vehicle);
-            boolean result = parkingLot.isVehiclePark(vehicle);
-            Assert.assertTrue(result);
-        } catch (ParkingLotException e) { }
+            String result = parkingLot.park(vehicle);
+            Assert.assertEquals("park vehicle",result);
+        } catch (ParkingLotException e) {
+            e.printStackTrace();
+        }
     }
 
     @Test
@@ -67,14 +71,16 @@ public class ParkingLotTest {
     @Test
     public void givenParkingLotIsFull_WhenInformAirportSecurity_shouldReturnTrue() {
         try {
-            VehiclePOJO vehicle = new VehiclePOJO();
+            VehiclePOJO vehicle1 = new VehiclePOJO();
             vehicle.setVehicleNumber("MH4R4545");
-            parkingLot.park(vehicle);
+            VehiclePOJO vehicle2 = new VehiclePOJO();
+            parkingLot.park(vehicle2);
             vehicle.setVehicleNumber("MH4R4547");
-            parkingLot.park(vehicle);
+            VehiclePOJO vehicle3 = new VehiclePOJO();
+            parkingLot.park(vehicle3);
             vehicle.setVehicleNumber("MH4R4548");
             String parkingLotFull = parkingLot.park(vehicle);
-            Assert.assertEquals("parking lot is full",parkingLotFull);
+            Assert.assertEquals("full",airportSecurity.getParkingSlotFullOrNot());
         } catch (ParkingLotException e) {
         }
     }
