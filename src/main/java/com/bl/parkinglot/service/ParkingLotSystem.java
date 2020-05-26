@@ -20,6 +20,10 @@ public class ParkingLotSystem {
     char sloatName = 'A';
     Integer key = 0;
 
+    public int setCapacity(int capacity){
+        return capacity;
+    }
+
     public ParkingLotSystem(Integer capacity, int slot) {
         this.capacity = capacity;
         this.slot = slot;
@@ -28,9 +32,7 @@ public class ParkingLotSystem {
         }
     }
 
-    public ParkingLotSystem() {
-    }
-
+    // add object to observableList
     public void addObserver(Observer observable) {
         this.observableList.add(observable);
     }
@@ -45,7 +47,7 @@ public class ParkingLotSystem {
     public String park(VehiclePOJO vehicle) throws ParkingLotException {
         if (parkingLot.containsValue(vehicle))
             throw new ParkingLotException(ParkingLotException.MyexceptionType.VEHICLE_ALREADY_PARK, "This vehicle already park");
-        key = vehicleParkLotNumber();
+            key = vehicleParkLotNumber();
         parkingLot.replace(key, vehicle);
         setStatus("this vehicle charge Rs.10");
         if (key % slot == 0 || key == capacity) {
@@ -55,13 +57,21 @@ public class ParkingLotSystem {
         return "park vehicle";
     }
 
-    public int vehicleParkLotNumber() {
-        Integer k = 1;
-        for (; k <= capacity; k++)
-            if (parkingLot.get(k) == null)
-                return k;
-        return k + 1;
-    }
+        public String  isVehiclePark(VehiclePOJO vehicle) throws ParkingLotException {
+            if (parkingLot.containsValue(vehicle))
+                return "vehicle park in lot number "+occupiedParkingLot(vehicle);
+            else
+                throw new ParkingLotException(ParkingLotException.MyexceptionType.VEHICLE_NOT_PARK,
+                        "This vehicle not park in my parking lot");
+        }
+
+        public int vehicleParkLotNumber() {
+            Integer k = 1;
+            for (; k <= capacity; k++)
+                if (parkingLot.get(k) == null)
+                    return k;
+            return k + 1;
+        }
 
     public int occupiedParkingLot(VehiclePOJO vehicle) {
         int k = 0;
