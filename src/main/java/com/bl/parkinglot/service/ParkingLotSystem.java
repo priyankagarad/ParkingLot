@@ -6,7 +6,8 @@
 package com.bl.parkinglot.service;
 import com.bl.parkinglot.Observer;
 import com.bl.parkinglot.exception.ParkingLotException;
-import com.bl.parkinglot.model.VehiclePOJO;
+import com.bl.parkinglot.model.Vehicle;
+import java.sql.Driver;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -44,7 +45,7 @@ public class ParkingLotSystem {
         }
     }
 
-    public String park(VehiclePOJO vehicle) throws ParkingLotException {
+    public String park(Vehicle vehicle) throws ParkingLotException {
         if (parkingLot.containsValue(vehicle))
             throw new ParkingLotException(ParkingLotException.MyexceptionType.VEHICLE_ALREADY_PARK, "This vehicle already park");
             key = vehicleParkLotNumber();
@@ -57,7 +58,7 @@ public class ParkingLotSystem {
         return "park vehicle";
     }
 
-        public String  isVehiclePark(VehiclePOJO vehicle) throws ParkingLotException {
+        public String  isVehiclePark(Vehicle vehicle) throws ParkingLotException {
             if (parkingLot.containsValue(vehicle))
                 return "vehicle park in lot number "+occupiedParkingLot(vehicle);
             else
@@ -65,15 +66,20 @@ public class ParkingLotSystem {
                         "This vehicle not park in my parking lot");
         }
 
-        public int vehicleParkLotNumber() {
-            Integer k = 1;
-            for (; k <= capacity; k++)
-                if (parkingLot.get(k) == null)
-                    return k;
-            return k + 1;
-        }
+    public int vehicleParkLotNumber(Vehicle vehicle){
+        Integer key=0;
+        if (vehicle.getDriver().getDriverType.equals(Driver.DriverType.HANDICAP))
+            key=0;
+        else
+            key=(checkLot()-1)*slot;
+        key++;
+        for (; key<=capacity ; key++)
+            if (parkingLot.get(key) == null)
+                return key;
+        return key+1;
+    }
 
-    public int occupiedParkingLot(VehiclePOJO vehicle) {
+    public int occupiedParkingLot(Vehicle vehicle) {
         int k = 0;
         for (Object o : parkingLot.values()) {
             k++;
@@ -83,7 +89,7 @@ public class ParkingLotSystem {
         return k + 1;
     }
 
-    public String unPark(VehiclePOJO vehicle) throws ParkingLotException {
+    public String unPark(Vehicle vehicle) throws ParkingLotException {
         int key = occupiedParkingLot(vehicle);
         if (parkingLot.containsValue(vehicle)) {
             parkingLot.replace(key, null);

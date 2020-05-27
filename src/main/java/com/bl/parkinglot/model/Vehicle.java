@@ -1,9 +1,22 @@
 package com.bl.parkinglot.model;
-public class VehiclePOJO {
+
+import java.sql.Driver;
+
+public class Vehicle {
     private String vehicleNumber;
+    private Driver driver;
+
+    public Vehicle(String vehicleNumber, Driver driver) {
+        this.vehicleNumber = vehicleNumber;
+        this.driver = driver;
+    }
 
     public void setVehicleNumber(String vehicleNumber) {
         this.vehicleNumber = vehicleNumber;
+    }
+
+    public Driver getDriver() {
+        return driver;
     }
 
     public String getVehicleNumber() {
@@ -14,6 +27,7 @@ public class VehiclePOJO {
     public String toString() {
         return "VehiclePOJO{" +
                 ", vehicleNumber='" + vehicleNumber + '\'' +
+                ", driver='" + driver + '\'' +
                 '}';
     }
 }
