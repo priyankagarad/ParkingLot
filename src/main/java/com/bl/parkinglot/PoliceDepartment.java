@@ -1,19 +1,19 @@
 package com.bl.parkinglot;
 import com.bl.parkinglot.model.Observer;
 public class PoliceDepartment implements Observer {
-    private String vehicleColore;
-
-    public String getVehicleColore() {
-        return vehicleColore;
+    private String vehicleLocation;
+    public String getVehicleLocation() {
+         return vehicleLocation;
     }
 
-    public void setVehicleColore(String vehicleColore) {
-        this.vehicleColore = vehicleColore;
+    public void setVehicleLocation(String vehicleLocation) {
+        this.vehicleLocation = vehicleLocation;
     }
 
     @Override
     public void update(Object status) {
-        this.setVehicleColore((String) status);
+        this.setVehicleLocation((String) status);
     }
 }
+
 
