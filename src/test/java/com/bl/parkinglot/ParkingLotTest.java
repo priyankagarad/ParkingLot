@@ -11,6 +11,7 @@ import java.sql.Driver;
 public class ParkingLotTest {
     AirportSecurity airportSecurity;
     ParkingLotSystem parkingLot;
+    PoliceDepartment police = null;
     Owner owner;
     Integer capacity=3;
     int slot=3;
@@ -19,6 +20,7 @@ public class ParkingLotTest {
     public void setUp(){
         parkingLot = new ParkingLotSystem(capacity,slot);
         airportSecurity=new AirportSecurity();
+        police = new PoliceDepartment();
         owner=new Owner();
     }
 

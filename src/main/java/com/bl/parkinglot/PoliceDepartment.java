@@ -2,6 +2,7 @@ package com.bl.parkinglot;
 import com.bl.parkinglot.model.Observer;
 public class PoliceDepartment implements Observer {
     private String vehicleColore;
+
     public String getVehicleColore() {
         return vehicleColore;
     }

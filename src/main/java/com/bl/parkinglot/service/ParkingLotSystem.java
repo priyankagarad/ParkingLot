@@ -83,4 +83,13 @@ public class ParkingLotSystem {
             throw new ParkingLotException(ParkingLotException.MyexceptionType.VEHICLE_NOT_PARK,
                     "This vehicle not park in my parking lot");
     }
+
+    public void serching(String colore){
+        String location = "";
+        for (Object vechicle:parkingLot.values()){
+            if (vechicle.toString().contains(colore))
+                location+=attendant.occupiedParkingLot(vechicle)+",";
+        }
+        setStatus(location);
+    }
 }
