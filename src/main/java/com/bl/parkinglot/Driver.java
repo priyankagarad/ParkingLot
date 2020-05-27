@@ -1,5 +1,6 @@
 package com.bl.parkinglot;
 public class Driver {
+
     public enum DriverType {
         HANDICAP,NORMAL
     }

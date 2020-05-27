@@ -8,6 +8,10 @@ import com.bl.parkinglot.model.Observer;
 import com.bl.parkinglot.exception.ParkingLotException;
 import com.bl.parkinglot.model.Vehicle;
 import java.util.*;
+import java.sql.Driver;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
 
 public class ParkingLotSystem {
     LinkedHashMap<Integer, Object> parkingLot = new LinkedHashMap<Integer, Object>();
@@ -67,7 +71,7 @@ public class ParkingLotSystem {
     }
 
     /**Check Vehicle is present or not*/
-        public String  isVehiclePark(Vehicle vehicle) throws ParkingLotException {
+    public String  isVehiclePark(Vehicle vehicle) throws ParkingLotException {
             if (parkingLot.containsValue(vehicle))
                 return "vehicle park in lot number "+occupiedParkingLot(vehicle);
             else
@@ -85,6 +89,19 @@ public class ParkingLotSystem {
         }
 
     /** find Object key*/
+    public int vehicleParkLotNumber(Vehicle vehicle){
+        Integer key=0;
+        if (vehicle.getDriver().getDriverType.equals(Driver.DriverType.HANDICAP))
+            key=0;
+        else
+            key=(checkLot()-1)*slot;
+        key++;
+        for (; key<=capacity ; key++)
+            if (parkingLot.get(key) == null)
+                return key;
+        return key+1;
+    }
+
     public int occupiedParkingLot(Vehicle vehicle) {
         int k = 0;
         for (Object o : parkingLot.values()) {
@@ -96,7 +113,7 @@ public class ParkingLotSystem {
     }
 
     /** unpark vehicle */
-    public String unPark(Vehicle vehicle) throws ParkingLotException {
+public String unPark(Vehicle vehicle) throws ParkingLotException {
         int key = occupiedParkingLot(vehicle);
         if (parkingLot.containsValue(vehicle)) {
             parkingLot.replace(key, null);
