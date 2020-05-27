@@ -4,6 +4,7 @@ import java.sql.Driver;
 
 public class Vehicle {
     private String vehicleNumber;
+    public String vehicleType;
     private Driver driver;
 
     public Vehicle(String vehicleNumber, Driver driver) {
@@ -23,12 +24,20 @@ public class Vehicle {
         return vehicleNumber;
     }
 
-    @Override
-    public String toString() {
-        return "VehiclePOJO{" +
-                ", vehicleNumber='" + vehicleNumber + '\'' +
-                ", driver='" + driver + '\'' +
-                '}';
+    public String getVehicleType() {
+        return vehicleType;
     }
 
+    public void setVehicleType(String vehicleType) {
+        this.vehicleType = vehicleType;
+    }
+
+    @Override
+    public String toString() {
+        return "Vehicle{" +
+                "vehicleNumber='" + vehicleNumber + '\'' +
+                ", vehicleType='" + vehicleType + '\'' +
+                ", driver=" + driver +
+                '}';
+    }
 }
