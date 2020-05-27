@@ -16,7 +16,7 @@ public class Vehicle {
     public Driver getDriver() {
         return driver;
     }
-    
+
     @Override
     public String toString() {
         return "Vehicle{" +
