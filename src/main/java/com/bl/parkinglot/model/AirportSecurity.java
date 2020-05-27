@@ -1,5 +1,4 @@
 package com.bl.parkinglot.model;
-import com.bl.parkinglot.Observer;
 public class AirportSecurity implements Observer {
     private String parkingSlotFullOrNot;
 

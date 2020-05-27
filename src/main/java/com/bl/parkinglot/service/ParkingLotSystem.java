@@ -4,15 +4,15 @@
  * Date:24/5/2020
  ********************************************************************************************************************/
 package com.bl.parkinglot.service;
-import com.bl.parkinglot.Observer;
+import com.bl.parkinglot.model.Observer;
 import com.bl.parkinglot.exception.ParkingLotException;
-import com.bl.parkinglot.model.VehiclePOJO;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
+import com.bl.parkinglot.model.Vehicle;
+import java.util.*;
+
 public class ParkingLotSystem {
     LinkedHashMap<Integer, Object> parkingLot = new LinkedHashMap<Integer, Object>();
     private List<Observer> observableList = new ArrayList<>();
+    Map<Integer,Integer> lots = new HashMap<>();
     private String isFull;
     Integer capacity;
     int slot = 2;
@@ -53,7 +53,7 @@ public class ParkingLotSystem {
     }
 
     /** park vehicle and check parking lot */
-    public String park(VehiclePOJO vehicle) throws ParkingLotException {
+    public String park(Vehicle vehicle) throws ParkingLotException {
         if (parkingLot.containsValue(vehicle))
             throw new ParkingLotException(ParkingLotException.MyexceptionType.VEHICLE_ALREADY_PARK, "This vehicle already park");
             key = vehicleParkLotNumber();
@@ -67,7 +67,7 @@ public class ParkingLotSystem {
     }
 
     /**Check Vehicle is present or not*/
-        public String  isVehiclePark(VehiclePOJO vehicle) throws ParkingLotException {
+        public String  isVehiclePark(Vehicle vehicle) throws ParkingLotException {
             if (parkingLot.containsValue(vehicle))
                 return "vehicle park in lot number "+occupiedParkingLot(vehicle);
             else
@@ -75,7 +75,7 @@ public class ParkingLotSystem {
                         "This vehicle not park in my parking lot");
         }
 
-        /**find empty parking lot*/
+       /**find empty parking lot*/
         public int vehicleParkLotNumber() {
             Integer k = 1;
             for (; k <= capacity; k++)
@@ -85,7 +85,7 @@ public class ParkingLotSystem {
         }
 
     /** find Object key*/
-    public int occupiedParkingLot(VehiclePOJO vehicle) {
+    public int occupiedParkingLot(Vehicle vehicle) {
         int k = 0;
         for (Object o : parkingLot.values()) {
             k++;
@@ -96,7 +96,7 @@ public class ParkingLotSystem {
     }
 
     /** unpark vehicle */
-    public String unPark(VehiclePOJO vehicle) throws ParkingLotException {
+    public String unPark(Vehicle vehicle) throws ParkingLotException {
         int key = occupiedParkingLot(vehicle);
         if (parkingLot.containsValue(vehicle)) {
             parkingLot.replace(key, null);

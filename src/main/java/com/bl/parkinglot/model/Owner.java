@@ -1,5 +1,5 @@
 package com.bl.parkinglot.model;
-import com.bl.parkinglot.Observer;
+
 public class Owner implements Observer {
     private String parkingFull;
     private String parkingSpace;

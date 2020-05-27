@@ -2,7 +2,7 @@ package com.bl.parkinglot;
 import com.bl.parkinglot.exception.ParkingLotException;
 import com.bl.parkinglot.model.AirportSecurity;
 import com.bl.parkinglot.model.Owner;
-import com.bl.parkinglot.model.VehiclePOJO;
+import com.bl.parkinglot.model.Vehicle;
 import com.bl.parkinglot.service.ParkingLotSystem;
 import org.junit.Assert;
 import org.junit.Before;
@@ -10,27 +10,27 @@ import org.junit.Test;
 public class ParkingLotTest {
     AirportSecurity airportSecurity;
     ParkingLotSystem parkingLot;
-    VehiclePOJO vehicle;
-    VehiclePOJO vehicle1;
-    VehiclePOJO vehicle2;
-    VehiclePOJO vehicle3;
+    Vehicle vehicle;
+    Vehicle vehicle1;
+    Vehicle vehicle2;
+    Vehicle vehicle3;
     Owner owner;
     Integer capacity=3;
     int slot=3;
 
     @Before
     public void setUp(){
-        vehicle = new VehiclePOJO();
-        vehicle1 = new VehiclePOJO();
-        vehicle2 = new VehiclePOJO();
-        vehicle3 = new VehiclePOJO();
+        vehicle = new Vehicle();
+        vehicle1 = new Vehicle();
+        vehicle2 = new Vehicle();
+        vehicle3 = new Vehicle();
         parkingLot = new ParkingLotSystem(capacity,slot);
         airportSecurity=new AirportSecurity();
         owner=new Owner();
     }
 
     @Test
-    public void givenVehicle_WhenParke_shouldReturnResult(){
+    public void givenVehicle_WhenPark_shouldReturnResult(){
         try {
             vehicle.setVehicleNumber("MH4R4545");
             String result = parkingLot.park(vehicle);
@@ -61,7 +61,7 @@ public class ParkingLotTest {
     }
 
     @Test
-    public void givenParkingLot_WhenFull_shouldReturnMessage() {
+    public void givenParkingLot_WhenFull_shouldInformOwner() {
         parkingLot.addObserver(owner);
         try {
             vehicle1.setVehicleNumber("MH4R4545");
@@ -149,9 +149,8 @@ public class ParkingLotTest {
         }
     }
 
-    //7
-        @Test
-        public void givenVehicleParkInLot_WhenCharge_shouldReturnTrue()  {
+     @Test
+        public void givenVehicleParkInLot_WhenCharge_shouldReturnParkingCharge()  {
         try {
             parkingLot.addObserver(owner);
             vehicle.setVehicleNumber("MH4R4545");

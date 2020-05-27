@@ -1,5 +1,5 @@
 package com.bl.parkinglot.model;
-public class VehiclePOJO {
+public class Vehicle {
     private String vehicleNumber;
 
     public void setVehicleNumber(String vehicleNumber) {
@@ -12,4 +12,5 @@ public class VehiclePOJO {
                 ", vehicleNumber='" + vehicleNumber + '\'' +
                 '}';
     }
+
 }
