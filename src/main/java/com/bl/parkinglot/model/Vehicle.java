@@ -1,13 +1,13 @@
 package com.bl.parkinglot.model;
 import java.sql.Driver;
 public class Vehicle {
+    private String vehicleName;
     private String vehicleNumber;
-    public String vehicleType;
     private Driver driver;
 
-    public Vehicle( String vehicleNumber, String vehicleType, Driver driver) {
+    public Vehicle( String vehicleName, String vehicleNumber, Driver driver) {
         this.vehicleNumber = vehicleNumber;
-        this.vehicleType=vehicleType;
+        this.vehicleName=vehicleName;
         this.driver = driver;
     }
 
@@ -15,11 +15,12 @@ public class Vehicle {
         return driver;
     }
 
+
     @Override
     public String toString() {
         return "Vehicle{" +
-                "vehicleNumber='" + vehicleNumber + '\'' +
-                ", vehicleType='" + vehicleType + '\'' +
+                "vehicleName='" + vehicleName + '\'' +
+                ", vehicleNumber='" + vehicleNumber + '\'' +
                 ", driver=" + driver +
                 '}';
     }
