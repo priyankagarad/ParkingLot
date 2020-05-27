@@ -4,23 +4,19 @@
  * Date:24/5/2020
  ********************************************************************************************************************/
 package com.bl.parkinglot.service;
+import com.bl.parkinglot.ParkingLotAttendant;
 import com.bl.parkinglot.model.Observer;
 import com.bl.parkinglot.exception.ParkingLotException;
 import com.bl.parkinglot.model.Vehicle;
-import java.util.*;
-import java.sql.Driver;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
 public class ParkingLotSystem {
-    LinkedHashMap<Integer, Object> parkingLot = new LinkedHashMap<Integer, Object>();
+    public LinkedHashMap<Integer, Object> parkingLot = new LinkedHashMap<>();
     private List<Observer> observableList = new ArrayList<>();
-    Map<Integer,Integer> lots = new HashMap<>();
+    ParkingLotAttendant attendant;
     private String isFull;
-    Integer capacity;
-    int slot = 2;
-    char sloatName = 'A';
     Integer key = 0;
 
     public int setCapacity(int capacity){
@@ -34,8 +30,7 @@ public class ParkingLotSystem {
      * @param slot:slot of parking lot
      */
     public ParkingLotSystem(Integer capacity, int slot) {
-        this.capacity = capacity;
-        this.slot = slot;
+        attendant = new ParkingLotAttendant(parkingLot,capacity,slot);
         for (Integer key = 1; key <= capacity; key++) {
             parkingLot.put(key, null);
         }
@@ -60,61 +55,26 @@ public class ParkingLotSystem {
     public String park(Vehicle vehicle) throws ParkingLotException {
         if (parkingLot.containsValue(vehicle))
             throw new ParkingLotException(ParkingLotException.MyexceptionType.VEHICLE_ALREADY_PARK, "This vehicle already park");
-            key = vehicleParkLotNumber();
+            key = attendant.vehicleParkLotNumber();
             parkingLot.replace(key, vehicle);
             setStatus("this vehicle charge Rs.10");
-        if (key % slot == 0 || key == capacity) {
-            setStatus("Full Lot " + sloatName);
-            sloatName++;
-        }
-        return "park vehicle";
-    }
+            String lotStatus = attendant.isLotFull();
+            setStatus(lotStatus);
+            return "park vehicle";
+         }
 
     /**Check Vehicle is present or not*/
     public String  isVehiclePark(Vehicle vehicle) throws ParkingLotException {
             if (parkingLot.containsValue(vehicle))
-                return "vehicle park in lot number "+occupiedParkingLot(vehicle);
+                return "vehicle park in lot number "+attendant.occupiedParkingLot(vehicle);
             else
                 throw new ParkingLotException(ParkingLotException.MyexceptionType.VEHICLE_NOT_PARK,
                         "This vehicle not park in my parking lot");
         }
 
-       /**find empty parking lot*/
-        public int vehicleParkLotNumber() {
-            Integer k = 1;
-            for (; k <= capacity; k++)
-                if (parkingLot.get(k) == null)
-                    return k;
-            return k + 1;
-        }
-
-    /** find Object key*/
-    public int vehicleParkLotNumber(Vehicle vehicle){
-        Integer key=0;
-        if (vehicle.getDriver().getDriverType.equals(Driver.DriverType.HANDICAP))
-            key=0;
-        else
-            key=(checkLot()-1)*slot;
-        key++;
-        for (; key<=capacity ; key++)
-            if (parkingLot.get(key) == null)
-                return key;
-        return key+1;
-    }
-
-    public int occupiedParkingLot(Vehicle vehicle) {
-        int k = 0;
-        for (Object o : parkingLot.values()) {
-            k++;
-            if (o == vehicle)
-                return k;
-        }
-        return k + 1;
-    }
-
     /** unpark vehicle */
-public String unPark(Vehicle vehicle) throws ParkingLotException {
-        int key = occupiedParkingLot(vehicle);
+    public String unPark(Vehicle vehicle) throws ParkingLotException {
+    int key = attendant.occupiedParkingLot(vehicle);
         if (parkingLot.containsValue(vehicle)) {
             parkingLot.replace(key, null);
             setStatus("Have Space lot number " + key);
