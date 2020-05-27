@@ -199,5 +199,25 @@ public class ParkingLotTest {
              String result = parkingLot.park(vehicle);
              Assert.assertEquals("park vehicle", result);
          }
+
+    @Test
+    public void givenParkingLot_WhenLargeVehicleParked_shouldReturnMessage() {
+        try {
+            this.capacity = 4;
+            this.slot = 2;
+            parkingLot = new ParkingLotSystem(capacity, slot);
+            parkingLot.addObserver(owner);
+            Vehicle vehicle1 = new Vehicle("suzuki", "MH4R4545", new Driver(Driver.DriverType.NORMAL));
+            parkingLot.park(vehicle1);
+            Vehicle vehicle2 = new Vehicle("suzuki", "MH4R4546",  new Driver(Driver.DriverType.HANDICAP));
+            parkingLot.park(vehicle2);
+            Vehicle vehicle3 = new Vehicle("suzuki", "MH4R4547", new Driver(Driver.DriverType.NORMAL));
+            parkingLot.park(vehicle3);
+            Vehicle vehicle = new Vehicle("suzuki", "MH4R4547",  new Driver(Driver.DriverType.NORMAL));
+            parkingLot.park(vehicle);
+        } catch (ParkingLotException e) {
+            Assert.assertEquals("Lot is full", e.getMessage());
+        }
+    }
 }
 
