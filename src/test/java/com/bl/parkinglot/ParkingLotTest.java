@@ -137,8 +137,9 @@ public class ParkingLotTest {
             parkingLot.park(vehicle);
             parkingLot.unPark(vehicle);
             Assert.assertEquals("Have Space lot number 3", owner.getParkingSpace());
+        } catch (ParkingLotException e) {
         }
-    }
+        }
 
     @Test
     public void givenCar_WhenPark_shouldReturnCarPosition() {
