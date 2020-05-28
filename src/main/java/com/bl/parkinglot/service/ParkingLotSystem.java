@@ -9,6 +9,8 @@ import com.bl.parkinglot.ParkingLotAttendant;
 import com.bl.parkinglot.model.Observer;
 import com.bl.parkinglot.exception.ParkingLotException;
 import com.bl.parkinglot.model.Vehicle;
+import com.sun.org.apache.xerces.internal.impl.xpath.regex.ParseException;
+
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -86,7 +88,7 @@ public class ParkingLotSystem {
     /**
      * unpark vehicle
      */
-    public String unPark(Vehicle vehicle) throws ParkingLotException {
+    public String unPark(Vehicle vehicle)  {
         int key = attendant.occupiedParkingLot(vehicle);
         if (parkingLot.containsValue(vehicle)) {
             parkingLot.replace(key, null);
@@ -97,7 +99,7 @@ public class ParkingLotSystem {
                     "This vehicle not park in my parking lot");
     }
 
-    public void serching(String... contains) {
+    public void serching(String... contains) throws ParkingLotException{
         String location = "";
         int count = 0;
         for (Object vechicle : parkingLot.values()) {
