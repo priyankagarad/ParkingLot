@@ -5,14 +5,14 @@ public class Vehicle {
     private String vehicleNumber;
     private String vehicleType;
     public Driver driver;
-    private String vehicleColore;
+    private String vehicleColor;
 
-    public Vehicle( String vehicleName, String vehicleNumber, String vehicleType,Driver driver,String vehicleColore) {
+    public Vehicle( String vehicleName, String vehicleNumber, String vehicleType,Driver driver,String vehicleColor) {
         this.vehicleNumber = vehicleNumber;
         this.vehicleName=vehicleName;
         this.vehicleType=vehicleType;
         this.driver = driver;
-        this.vehicleColore=vehicleColore;
+        this.vehicleColor=vehicleColor;
     }
 
     public Driver getDriver() {
@@ -30,7 +30,7 @@ public class Vehicle {
                 ", vehicleNumber='" + vehicleNumber + '\'' +
                 ", vehicleType='" + vehicleType + '\'' +
                 ", driver=" + driver +
-                ", vehicleColore=" + vehicleColore +
+                ", vehicleColore=" + vehicleColor +
                 '}';
     }
 }

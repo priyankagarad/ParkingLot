@@ -20,7 +20,7 @@ public class CalculateTime {
         return sdf.format(cal.getTime());
     }
 
-    public String vehicleIntime(String... contains) throws ParseException {
+    public String vehicleInTime(String... contains) throws ParseException {
         SimpleDateFormat format = new SimpleDateFormat("HH:mm");
         Date startTime = format.parse(contains[0]);
         Date endTime = format.parse(contains[1]);

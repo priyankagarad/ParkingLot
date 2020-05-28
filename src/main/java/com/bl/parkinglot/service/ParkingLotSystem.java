@@ -4,20 +4,15 @@
  * Date:24/5/2020
  ********************************************************************************************************************/
 package com.bl.parkinglot.service;
-import com.bl.parkinglot.model.CalculateTime;
-import com.bl.parkinglot.model.Driver;
-import com.bl.parkinglot.model.ParkingLotAttendant;
-import com.bl.parkinglot.model.PoliceDepartment;
-import com.bl.parkinglot.model.Observer;
 import com.bl.parkinglot.exception.ParkingLotException;
-import com.bl.parkinglot.model.Vehicle;
+import com.bl.parkinglot.model.*;
+import com.bl.parkinglot.model.Observer;
 import java.text.ParseException;
 import java.util.*;
-
 public class ParkingLotSystem {
     public LinkedHashMap<Integer, Vehicle> parkingLot = new LinkedHashMap<>();
     public Map<Integer, Object> vehicleTime = new HashMap<>();
-    private List<Observer> observableList = new ArrayList<>();
+    private List<com.bl.parkinglot.model.Observer> observableList = new ArrayList<>();
     ParkingLotAttendant attendant;
     PoliceDepartment police;
     private String isFull;
@@ -25,10 +20,6 @@ public class ParkingLotSystem {
     int slot = 3;
     String location = "";
     int froudNumberplate = 0;
-
-    public int setCapacity(int capacity) {
-        return capacity;
-    }
 
     /**
      * @param capacity:-capacity of parking lot
@@ -46,12 +37,13 @@ public class ParkingLotSystem {
             vehicleTime.put(key, null);
         }
     }
+
     public ParkingLotSystem(){}
 
     /**
      * @param observable:observer
      */
-    public void addObserver(Observer observable) {
+    public void addObserver(com.bl.parkinglot.model.Observer observable) {
         this.observableList.add(observable);
     }
 
@@ -105,16 +97,16 @@ public class ParkingLotSystem {
                     "This vehicle not park in my parking lot");
     }
 
-    public int serching(String... contains) throws ParseException {
-        if (contains.length == 2 && contains[0].contains(":") && contains[1].contains(":"))
-            location = time.vehicleIntime(contains);
+    public int serching(String... arg) throws ParseException {
+        if (arg.length == 2 && arg[0].contains(":") && arg[1].contains(":"))
+            location = time.vehicleInTime(arg);
         else {
             for (Object o : parkingLot.values()) {
                 int count = 0;
-                for (int index = 0; index < contains.length; index++)
-                    if (o.toString().contains(contains[index]))
+                for (int index = 0; index < arg.length; index++)
+                    if (o.toString().contains(arg[index]))
                         count++;
-                if (count == contains.length)
+                if (count == arg.length)
                     location += attendant.occupiedParkingLot(o) + ",";
                 else froudNumberplate++;
             }
@@ -138,20 +130,20 @@ public class ParkingLotSystem {
         setStatus(fraudPlate);
     }
     
-    public void serchInSlot (Driver.DriverType handicap, String... contain){
+    public void searchInSlot (Driver.DriverType handicap, String... arg){
         location = "";
-        int upTo = (((contain[0].charAt(0) - 64) - 1) * slot) + 1 + slot;
-        for (int key = (((contain[0].charAt(0) - 64) - 1) * slot) + 1; key < upTo; key++) {
+        int upTo = (((arg[0].charAt(0) - 64) - 1) * slot) + 1 + slot;
+        for (int key = (((arg[0].charAt(0) - 64) - 1) * slot) + 1; key < upTo; key++) {
             Vehicle vehicle = parkingLot.get(key);
             String vehicleToString = vehicle.toString();
             int count = 0;
-            for (int index = 1; index < contain.length; index++)
-                if (vehicleToString.contains(contain[index]) && vehicle.getDriver().getDriverType().equals(handicap))
+            for (int index = 1; index < arg.length; index++)
+                if (vehicleToString.contains(arg[index]) && vehicle.getDriver().getDriverType().equals(handicap))
                     count++;
-                if (count == contain.length - 1)
+                if (count == arg.length - 1)
                     location += attendant.occupiedParkingLot(vehicle) + ",";
                 }
-                setStatus(location);
-            }
-        }
+        setStatus(location);
+    }
+}
 
