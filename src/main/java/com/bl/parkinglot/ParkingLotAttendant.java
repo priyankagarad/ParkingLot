@@ -1,4 +1,5 @@
 package com.bl.parkinglot;
+import com.bl.parkinglot.model.Vehicle;
 import com.bl.parkinglot.service.ParkingLotSystem;
 import java.util.Collections;
 import java.util.HashMap;
@@ -11,13 +12,13 @@ public class ParkingLotAttendant {
     Map<Integer,Integer> lots = new HashMap<>();
     LinkedHashMap parkingLot;
 
-    public ParkingLotAttendant(LinkedHashMap<Integer, Object> parkingLot, Integer capacity, int slot) {
+    public ParkingLotAttendant(LinkedHashMap<Integer, Vehicle> parkingLot, Integer capacity, int slot) {
         this.parkingLot = parkingLot;
         this.capacity = capacity;
         this.slot = slot;
     }
 
-    public int vehicleParkLotNumber(){
+    public int vehicleParkLotNumber(Vehicle vehicle){
         Integer k=(checkLot()-1)*slot;
         k++;
 

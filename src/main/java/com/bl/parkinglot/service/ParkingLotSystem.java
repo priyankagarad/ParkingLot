@@ -4,22 +4,22 @@
  * Date:24/5/2020
  ********************************************************************************************************************/
 package com.bl.parkinglot.service;
+import com.bl.parkinglot.CalculateTime;
 import com.bl.parkinglot.Driver;
 import com.bl.parkinglot.ParkingLotAttendant;
 import com.bl.parkinglot.model.Observer;
 import com.bl.parkinglot.exception.ParkingLotException;
 import com.bl.parkinglot.model.Vehicle;
-
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public class ParkingLotSystem {
-    public LinkedHashMap<Integer, Object> parkingLot = new LinkedHashMap<>();
+    public LinkedHashMap<Integer, Vehicle> parkingLot = new LinkedHashMap<>();
+    public Map<Integer, Object> vehicleTime = new HashMap<>();
     private List<Observer> observableList = new ArrayList<>();
     ParkingLotAttendant attendant;
     private String isFull;
-    Integer key = 0;
 
     public int setCapacity(int capacity) {
         return capacity;
@@ -41,8 +41,6 @@ public class ParkingLotSystem {
     }
 
     /**
-     * +
-     *
      * @param observable:observer
      */
     public void addObserver(Observer observable) {
@@ -65,8 +63,9 @@ public class ParkingLotSystem {
     public String park(Vehicle vehicle) throws ParkingLotException {
         if (parkingLot.containsValue(vehicle))
             throw new ParkingLotException(ParkingLotException.MyexceptionType.VEHICLE_ALREADY_PARK, "This vehicle already park");
-        key = attendant.vehicleParkLotNumber();
+        Integer key = attendant.vehicleParkLotNumber(vehicle);
         parkingLot.replace(key, vehicle);
+        vehicleTime.put(key, CalculateTime.getCurrentTime());
         setStatus("this vehicle charge Rs.10");
         String lotStatus = attendant.isLotFull();
         setStatus(lotStatus);
@@ -87,7 +86,7 @@ public class ParkingLotSystem {
     /**
      * unpark vehicle
      */
-    public String unPark(Vehicle vehicle)  {
+    public String unPark(Vehicle vehicle) {
         int key = attendant.occupiedParkingLot(vehicle);
         if (parkingLot.containsValue(vehicle)) {
             parkingLot.replace(key, null);
@@ -98,35 +97,47 @@ public class ParkingLotSystem {
                     "This vehicle not park in my parking lot");
     }
 
-    public void serching(String... contains) throws ParkingLotException{
+    public void serching(String... contains) throws ParseException {
         String location = "";
-        int count = 0;
-        for (Object vechicle : parkingLot.values()) {
-            for (int i = 0; i < contains.length; i++) {
-                if (vechicle.toString().contains(contains[i]))
-                    count++;
+        if (contains.length == 2 && contains[0].contains(":") && contains[1].contains(":")) {
+            SimpleDateFormat format = new SimpleDateFormat("HH:mm");
+            Date startTime = format.parse(contains[0]);
+            Date endTime = format.parse(contains[1]);
+            try {
+                for (int vehicleKey = 1; vehicleKey <= vehicleTime.size(); vehicleKey++) {
+                    Date userDate = format.parse(vehicleTime.get(vehicleKey).toString());
+                    if (userDate.after(startTime) && userDate.before(endTime))
+                        location += vehicleKey + ",";
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-            if (count == contains.length) {
-                location += attendant.occupiedParkingLot(vechicle) + ",";
+        } else {
+            for (Object o : parkingLot.values()) {
+                int count = 0;
+                for (int index = 0; index < contains.length; index++)
+                    if (o.toString().contains(contains[index]))
+                        count++;
+                if (count == contains.length)
+                    location += attendant.occupiedParkingLot(o) + ",";
             }
-            count = 0;
+            setStatus(location);
         }
-        setStatus(location);
-    }
 
-    public void serchInSlot(Driver.DriverType handicap, String... c){
-        location ="";
-        int upTo = (((c[0].charAt(0)-64)-1)*slot)+1+slot;
-        for (int key=(((c[0].charAt(0)-64)-1)*slot)+1; key<upTo; key++) {
-            Vehicle o=parkingLot.get(key);
-            String s = o.toString();
-            int count = 0;
-            for (int index = 1; index < c.length; index++)
-                if (s.contains(c[index]) && o.getDriver().getDriverType().equals(handicap))
-                    count++;
-            if (count == c.length-1)
-                location += attendant.occupiedParkingLot(o) + ",";
+        public void serchInSlot (Driver.DriverType handicap, String...c){
+            location = "";
+            int upTo = (((c[0].charAt(0) - 64) - 1) * slot) + 1 + slot;
+            for (int key = (((c[0].charAt(0) - 64) - 1) * slot) + 1; key < upTo; key++) {
+                Vehicle o = parkingLot.get(key);
+                String s = o.toString();
+                int count = 0;
+                for (int index = 1; index < c.length; index++)
+                    if (s.contains(c[index]) && o.getDriver().getDriverType().equals(handicap))
+                        count++;
+                if (count == c.length - 1)
+                    location += attendant.occupiedParkingLot(o) + ",";
+            }
+            setStatus(location);
         }
-        setStatus(location);
     }
 }
