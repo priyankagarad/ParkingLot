@@ -9,7 +9,6 @@ import com.bl.parkinglot.ParkingLotAttendant;
 import com.bl.parkinglot.model.Observer;
 import com.bl.parkinglot.exception.ParkingLotException;
 import com.bl.parkinglot.model.Vehicle;
-import com.sun.org.apache.xerces.internal.impl.xpath.regex.ParseException;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
