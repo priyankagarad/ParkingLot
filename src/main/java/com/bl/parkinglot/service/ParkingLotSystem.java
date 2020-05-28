@@ -7,11 +7,11 @@ package com.bl.parkinglot.service;
 import com.bl.parkinglot.CalculateTime;
 import com.bl.parkinglot.Driver;
 import com.bl.parkinglot.ParkingLotAttendant;
+import com.bl.parkinglot.PoliceDepartment;
 import com.bl.parkinglot.model.Observer;
 import com.bl.parkinglot.exception.ParkingLotException;
 import com.bl.parkinglot.model.Vehicle;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class ParkingLotSystem {
@@ -19,7 +19,11 @@ public class ParkingLotSystem {
     public Map<Integer, Object> vehicleTime = new HashMap<>();
     private List<Observer> observableList = new ArrayList<>();
     ParkingLotAttendant attendant;
+    PoliceDepartment police;
     private String isFull;
+    CalculateTime time;
+    String location = "";
+    int froudNumberplate = 0;
 
     public int setCapacity(int capacity) {
         return capacity;
@@ -35,6 +39,8 @@ public class ParkingLotSystem {
      */
     public ParkingLotSystem(Integer capacity, int slot) {
         attendant = new ParkingLotAttendant(parkingLot, capacity, slot);
+        time = new CalculateTime(vehicleTime);
+        police = new PoliceDepartment();
         for (Integer key = 1; key <= capacity; key++) {
             parkingLot.put(key, null);
         }
@@ -97,21 +103,10 @@ public class ParkingLotSystem {
                     "This vehicle not park in my parking lot");
     }
 
-    public void serching(String... contains) throws ParseException {
-        String location = "";
-        if (contains.length == 2 && contains[0].contains(":") && contains[1].contains(":")) {
-            SimpleDateFormat format = new SimpleDateFormat("HH:mm");
-            Date startTime = format.parse(contains[0]);
-            Date endTime = format.parse(contains[1]);
-            try {
-                for (int vehicleKey = 1; vehicleKey <= vehicleTime.size(); vehicleKey++) {
-                    Date userDate = format.parse(vehicleTime.get(vehicleKey).toString());
-                    if (userDate.after(startTime) && userDate.before(endTime))
-                        location += vehicleKey + ",";
-                }
-            } catch (Exception e) {
-                e.printStackTrace(); }
-        } else {
+    public int serching(String... contains) throws ParseException {
+        if (contains.length == 2 && contains[0].contains(":") && contains[1].contains(":"))
+            location=time.vehicleIntime(contains);
+         else {
             for (Object o : parkingLot.values()) {
                 int count = 0;
                 for (int index = 0; index < contains.length; index++)
@@ -119,8 +114,24 @@ public class ParkingLotSystem {
                         count++;
                 if (count == contains.length)
                     location += attendant.occupiedParkingLot(o) + ",";
+                else froudNumberplate++;
             }
-            setStatus(location); }
+            setStatus(location);
+            return froudNumberplate;
+        }
+        public void fraudulentPlate() throws ParseException {
+            String fraudPlate ="";
+            int i=1;
+            for (Object o: police.numberRegister.values()) {
+                String keyv=police.numberRegister.keySet().stream().filter(key -> o.equals(police.numberRegister.get(key))).findFirst().get();
+                String value=o.toString();
+                serching(keyv,value);
+                if (froudNumberplate == parkingLot.size())
+                    fraudPlate+=i+",";
+                froudNumberplate=0;i++;
+            }
+            setStatus(fraudPlate);
+        }
 
         public void serchInSlot (Driver.DriverType handicap, String... c){
             location = "";

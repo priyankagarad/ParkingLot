@@ -263,8 +263,8 @@ public class ParkingLotTest {
             Vehicle vehicle2 = new Vehicle("BMW", "MH4R4546",  new Driver(Driver.DriverType.NORMAL), "WHITE");
             parkingLot.park(vehicle2);
             Vehicle vehicle = new Vehicle("Toyota", "MH4R4547", new Driver(Driver.DriverType.NORMAL), "BLUE");
-            String result = parkingLot.park(vehicle);
-            parkingLot.serching("00:3", "00:50");
+            parkingLot.park(vehicle);
+            parkingLot.serching("01:00", "24:50");
             Assert.assertEquals("1,2,3,", police.getVehicleLocation());
         } catch(ParkingLotException | ParseException e){
             e.printStackTrace();
