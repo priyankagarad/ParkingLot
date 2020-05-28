@@ -110,8 +110,7 @@ public class ParkingLotSystem {
                         location += vehicleKey + ",";
                 }
             } catch (Exception e) {
-                e.printStackTrace();
-            }
+                e.printStackTrace(); }
         } else {
             for (Object o : parkingLot.values()) {
                 int count = 0;
@@ -121,10 +120,9 @@ public class ParkingLotSystem {
                 if (count == contains.length)
                     location += attendant.occupiedParkingLot(o) + ",";
             }
-            setStatus(location);
-        }
+            setStatus(location); }
 
-        public void serchInSlot (Driver.DriverType handicap, String...c){
+        public void serchInSlot (Driver.DriverType handicap, String... c){
             location = "";
             int upTo = (((c[0].charAt(0) - 64) - 1) * slot) + 1 + slot;
             for (int key = (((c[0].charAt(0) - 64) - 1) * slot) + 1; key < upTo; key++) {
@@ -134,10 +132,10 @@ public class ParkingLotSystem {
                 for (int index = 1; index < c.length; index++)
                     if (s.contains(c[index]) && o.getDriver().getDriverType().equals(handicap))
                         count++;
-                if (count == c.length - 1)
+                    if (count == c.length - 1)
                     location += attendant.occupiedParkingLot(o) + ",";
+                }
+                setStatus(location);
             }
-            setStatus(location);
         }
-    }
 }

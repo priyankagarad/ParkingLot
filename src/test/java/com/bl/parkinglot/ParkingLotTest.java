@@ -253,5 +253,22 @@ public class ParkingLotTest {
         Assert.assertEquals("2,", police.getVehicleLocation());
     }
 
+    @Test
+    public void givenParkingLotSystem_WhenVehicleParkLast30Minuts_shouldReturnCarsLocation() throws ParkingLotException {
+        try {
+            parkingLot.addObserver(owner);
+            parkingLot.addObserver(police);
+            Vehicle vehicle1 = new Vehicle("Toyota", "MH4R4545", new Driver(Driver.DriverType.NORMAL), "BLUE");
+            parkingLot.park(vehicle1);
+            Vehicle vehicle2 = new Vehicle("BMW", "MH4R4546",  new Driver(Driver.DriverType.NORMAL), "WHITE");
+            parkingLot.park(vehicle2);
+            Vehicle vehicle = new Vehicle("Toyota", "MH4R4547", new Driver(Driver.DriverType.NORMAL), "BLUE");
+            String result = parkingLot.park(vehicle);
+            parkingLot.serching("00:3", "00:50");
+            Assert.assertEquals("1,2,3,", police.getVehicleLocation());
+        } catch(ParkingLotException | ParseException e){
+            e.printStackTrace();
+        }
+    }
 }
 
