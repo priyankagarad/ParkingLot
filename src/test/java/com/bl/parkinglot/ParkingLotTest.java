@@ -2,6 +2,7 @@ package com.bl.parkinglot;
 import com.bl.parkinglot.exception.ParkingLotException;
 import com.bl.parkinglot.model.AirportSecurity;
 import com.bl.parkinglot.model.Owner;
+import com.bl.parkinglot.model.PoliceDepartment;
 import com.bl.parkinglot.model.Vehicle;
 import com.bl.parkinglot.service.ParkingLotSystem;
 import org.junit.Assert;
@@ -12,7 +13,7 @@ import java.text.ParseException;
 public class ParkingLotTest {
     AirportSecurity airportSecurity;
     ParkingLotSystem parkingLot;
-    PoliceDepartment police = null;
+    PoliceDepartment police ;
     Owner owner;
     Integer capacity=3;
     int slot=3;
@@ -26,9 +27,9 @@ public class ParkingLotTest {
         }
 
     @Test
-    public void givenVehicle_WhenPark_shouldReturnResult() {
+    public void givenVehicle_WhenPark_shouldReturnResult()  throws ParkingLotException{
         try {
-            Vehicle vehicle = new Vehicle("suzuki", "MH4R4545", drgetDriverType.NORMAL),"WHITE");
+            Vehicle vehicle = new Vehicle("suzuki", "MH4R4545", "SMALL", new Driver(Driver.NORMAL), "WHITE");
             String result = parkingLot.park(vehicle);
             Assert.assertEquals("park vehicle", result);
         } catch (ParkingLotException e) {
@@ -39,7 +40,7 @@ public class ParkingLotTest {
     @Test
     public void givenVehicle_WhenAlreadyParked_shouldReturnException() {
         try {
-            Vehicle vehicle = new Vehicle("suzuki", "MH4R4545", new Driver(Driver.DriverType.NORMAL),"WHITE");
+            Vehicle vehicle = new Vehicle("suzuki", "MH4R4545", "SMALL", new Driver(Driver.DriverType.NORMAL), "WHITE");
             parkingLot.park(vehicle);
             parkingLot.park(vehicle);
         } catch (ParkingLotException e) {
@@ -50,7 +51,7 @@ public class ParkingLotTest {
     @Test
     public void givenVehicle_WhenUnPark_shouldReturnResult() {
         try {
-            Vehicle vehicle = new Vehicle("suzuki", "MH4R4545",new Driver(Driver.DriverType.NORMAL),"WHITE");
+            Vehicle vehicle = new Vehicle("suzuki", "MH4R4545", "SMALL", new Driver(Driver.DriverType.NORMAL), "WHITE");
             parkingLot.park(vehicle);
             String result = parkingLot.unPark(vehicle);
             Assert.assertEquals("unpark", result);
@@ -64,11 +65,11 @@ public class ParkingLotTest {
         parkingLot.addObserver(owner);
         try {
             parkingLot.addObserver(owner);
-            Vehicle vehicle1 = new Vehicle("suzuki", "MH4R4545", new Driver(Driver.DriverType.NORMAL),"WHITE");
+            Vehicle vehicle1 = new Vehicle("suzuki", "MH4R4545", "SMALL", new Driver(Driver.DriverType.NORMAL), "WHITE");
             parkingLot.park(vehicle1);
-            Vehicle vehicle2 = new Vehicle("suzuki", "MH4R4546", new Driver(Driver.DriverType.NORMAL),"WHITE");
+            Vehicle vehicle2 = new Vehicle("suzuki", "MH4R4546", "SMALL", new Driver(Driver.DriverType.NORMAL), "WHITE");
             parkingLot.park(vehicle2);
-            Vehicle vehicle = new Vehicle("suzuki", "MH4R4547", new Driver(Driver.DriverType.NORMAL),"WHITE");
+            Vehicle vehicle = new Vehicle("suzuki", "MH4R4547", "SMALL", new Driver(Driver.DriverType.NORMAL), "WHITE");
             parkingLot.park(vehicle);
             Assert.assertEquals("Full Lot 1", owner.getParkingFull());
         } catch (Exception e) {
@@ -80,9 +81,9 @@ public class ParkingLotTest {
     public void givenParkingLotCapacityIs2_whenFull_ShouldInformOwner(){
         try{
             parkingLot.addObserver(owner);
-            Vehicle vehicle1 = new Vehicle("suzuki", "MH4R4545", new Driver(Driver.DriverType.NORMAL),"WHITE");
+            Vehicle vehicle1 = new Vehicle("suzuki", "MH4R4545", "SMALL", new Driver(Driver.DriverType.NORMAL), "WHITE");
             parkingLot.park(vehicle1);
-            Vehicle vehicle2 = new Vehicle("suzuki", "MH4R4546", new Driver(Driver.DriverType.NORMAL),"WHITE");
+            Vehicle vehicle2 = new Vehicle("suzuki", "MH4R4546", "SMALL", new Driver(Driver.DriverType.NORMAL), "WHITE");
             parkingLot.park(vehicle2);
             String parkingFull=owner.getParkingFull();
              Assert.assertTrue(parkingFull,true);
@@ -93,11 +94,12 @@ public class ParkingLotTest {
     @Test
     public void givenParkingLot_whenFull_shouldInformAirportSecurity() {
         try {
-            Vehicle vehicle1 = new Vehicle("suzuki", "MH4R4545", new Driver(Driver.DriverType.NORMAL),"WHITE");
+            Vehicle vehicle1 = new Vehicle("suzuki", "" +
+                    "MH4R4545", "SMALL", new Driver(Driver.DriverType.NORMAL), "WHITE");
             parkingLot.park(vehicle1);
-            Vehicle vehicle2 = new Vehicle("suzuki", "MH4R4546",  new Driver(Driver.DriverType.NORMAL),"WHITE");
+            Vehicle vehicle2 = new Vehicle("suzuki", "MH4R4546", "SMALL", new Driver(Driver.DriverType.NORMAL), "WHITE");
             parkingLot.park(vehicle2);
-            Vehicle vehicle = new Vehicle("suzuki", "MH4R4545", new Driver(Driver.DriverType.NORMAL),"WHITE");
+            Vehicle vehicle = new Vehicle("suzuki", "MH4R4547", "SMALL", new Driver(Driver.DriverType.NORMAL), "WHITE");
             parkingLot.park(vehicle);
             Assert.assertEquals("Full Lot 1", airportSecurity.getParkingSlotFullOrNot());
         } catch (Exception e) {
@@ -109,10 +111,8 @@ public class ParkingLotTest {
     @Test
     public void givenVehicleNotPresentInParkingLot_WhenUnPark_shouldThrowException() {
         try {
-            Vehicle vehicle = new Vehicle("suzuki", "MH4R4545", new Driver(Driver.DriverType.NORMAL),"WHITE");
-
-
-            Vehicle vehicle1 = new Vehicle("suzuki", "MH4R4546",  new Driver(Driver.DriverType.NORMAL),"WHITE");
+            Vehicle vehicle2 = new Vehicle("suzuki", "MH4R4546", "SMALL", new Driver(Driver.DriverType.NORMAL), "WHITE");
+            Vehicle vehicle1 = new Vehicle("suzuki", "MH4R4547", "SMALL", new Driver(Driver.DriverType.NORMAL), "WHITE");
             parkingLot.unPark(vehicle1);
         } catch (ParkingLotException e) {
             Assert.assertEquals("This vehicle not park in my parking lot", e.getMessage());
@@ -129,11 +129,11 @@ public class ParkingLotTest {
     public void givenAgainParkingLot_whenSpaceAvailable_shouldInformOwner() {
         try{
             parkingLot.addObserver(owner);
-            Vehicle vehicle1 = new Vehicle("suzuki", "MH4R4545",  new Driver(Driver.DriverType.NORMAL),"WHITE");
+            Vehicle vehicle1 = new Vehicle("suzuki", "MH4R4546", "SMALL", new Driver(Driver.DriverType.NORMAL), "WHITE");
             parkingLot.park(vehicle1);
-            Vehicle vehicle2 = new Vehicle("suzuki", "MH4R4546", new Driver(Driver.DriverType.NORMAL),"WHITE");
+            Vehicle vehicle2 = new Vehicle("suzuki", "MH4R4547", "SMALL", new Driver(Driver.DriverType.NORMAL), "WHITE");
             parkingLot.park(vehicle2);
-            Vehicle vehicle = new Vehicle("suzuki", "MH4R4547", new Driver(Driver.DriverType.NORMAL),"WHITE");
+            Vehicle vehicle = new Vehicle("suzuki", "MH4R4547", "SMALL", new Driver(Driver.DriverType.NORMAL), "WHITE");
             parkingLot.park(vehicle);
             parkingLot.unPark(vehicle);
             Assert.assertEquals("Have Space lot number 3", owner.getParkingSpace());
@@ -156,8 +156,8 @@ public class ParkingLotTest {
     }
 
      @Test
-        public void givenVehicleParkInLot_WhenCharge_shouldReturnParkingCharge() {
-         try {
+     public void givenVehicleParkInLot_WhenCharge_shouldReturnParkingCharge() {
+        try {
              parkingLot.addObserver(owner);
              Vehicle vehicle = new Vehicle("suzuki", "MH4R4545", "SMALL", new Driver(Driver.DriverType.NORMAL),"WHITE");
              parkingLot.park(vehicle);
@@ -165,45 +165,45 @@ public class ParkingLotTest {
          } catch (ParkingLotException e) {
              e.printStackTrace();
          }
-         }
+    }
 
-         @Test
-         public void givenParkingAttendant_WhenEvenlyDistribution_shouldReturnMessage () {
-             try {
-                 this.capacity = 4;
-                 this.slot = 2;
-                 parkingLot = new ParkingLotSystem(capacity, slot);
-                 parkingLot.addObserver(owner);
-                 Vehicle vehicle = new Vehicle("suzuki", "MH4R4545",  new Driver(Driver.DriverType.NORMAL),"WHITE");
-                 parkingLot.park(vehicle);
-                 Vehicle vehicle1 = new Vehicle("suzuki", "MH4R4546", new Driver(Driver.DriverType.NORMAL),"WHITE");
-                 parkingLot.park(vehicle1);
-                 Vehicle vehicle2 = new Vehicle("suzuki", "MH4R4547",  new Driver(Driver.DriverType.NORMAL),"WHITE");
-                 parkingLot.park(vehicle2);
-                 Assert.assertEquals("Full Lot 1", owner.getParkingFull());
-                 Vehicle vehicle3 = new Vehicle("suzuki", "MH4R4548",  new Driver(Driver.DriverType.NORMAL),"WHITE");
-                 parkingLot.park(vehicle3);
-                 Assert.assertEquals("Full Lot 2", owner.getParkingFull());
-             } catch (ParkingLotException e) {
+    @Test
+    public void givenParkingAttendant_WhenEvenlyDistribution_shouldReturnMessage () {
+        try {
+            this.capacity = 4;
+            this.slot = 2;
+            parkingLot = new ParkingLotSystem(capacity, slot);
+            parkingLot.addObserver(owner);
+            Vehicle vehicle = new Vehicle("suzuki", "MH4R4545", "SMALL", new Driver(Driver.DriverType.NORMAL), "WHITE");
+            parkingLot.park(vehicle);
+            Vehicle vehicle1 = new Vehicle("suzuki", "MH4R4546", "SMALL", new Driver(Driver.DriverType.NORMAL), "WHITE");
+            parkingLot.park(vehicle1);
+            Vehicle vehicle2 = new Vehicle("suzuki", "MH4R4547", "SMALL", new Driver(Driver.DriverType.NORMAL), "WHITE");
+            parkingLot.park(vehicle2);
+            Assert.assertEquals("Full Lot 1", owner.getParkingFull());
+            Vehicle vehicle3 = new Vehicle("suzuki", "MH4R4548", "SMALL", new Driver(Driver.DriverType.NORMAL), "WHITE");
+            parkingLot.park(vehicle3);
+            Assert.assertEquals("Full Lot 2", owner.getParkingFull());
+        } catch (ParkingLotException e) {
                  e.printStackTrace();
              }
      }
 
-         @Test
-         public void givenHandicapDriver_WhenNearestFreeSpace_shouldParkCar () {
-             this.capacity = 4;
-             this.slot = 2;
-             parkingLot.addObserver(owner);
-             Vehicle vehicle1 = new Vehicle("suzuki", "MH4R4545",  new Driver(Driver.DriverType.NORMAL),"WHITE");
-             parkingLot.park(vehicle1);
-             Vehicle vehicle2 = new Vehicle("suzuki", "MH4R4546",  new Driver(Driver.DriverType.HANDICAP),"WHITE");
-             parkingLot.park(vehicle2);
-             Vehicle vehicle3 = new Vehicle("suzuki", "MH4R4547",  new Driver(Driver.DriverType.NORMAL),"WHITE");
-             parkingLot.park(vehicle3);
-             Vehicle vehicle = new Vehicle("suzuki", "MH4R4547",  new Driver(Driver.DriverType.NORMAL),"WHITE");
-             String result = parkingLot.park(vehicle);
-             Assert.assertEquals("park vehicle", result);
-         }
+     @Test
+     public void givenHandicapDriver_WhenNearestFreeSpace_shouldParkCar () {
+        this.capacity = 4;
+        this.slot = 2;
+        parkingLot.addObserver(owner);
+        Vehicle vehicle1 = new Vehicle("suzuki", "MH4R4545", "SMALL", new Driver(Driver.DriverType.NORMAL), "WHITE");
+        parkingLot.park(vehicle1);
+        Vehicle vehicle2 = new Vehicle("suzuki", "MH4R4546", "SMALL", new Driver(Driver.DriverType.HANDICAP), "WHITE");
+        parkingLot.park(vehicle2);
+        Vehicle vehicle3 = new Vehicle("suzuki", "MH4R4547", "SMALL", new Driver(Driver.DriverType.NORMAL), "WHITE");
+        parkingLot.park(vehicle3);
+        Vehicle vehicle = new Vehicle("suzuki", "MH4R4547", "SMALL", new Driver(Driver.DriverType.NORMAL), "WHITE");
+        String result = parkingLot.park(vehicle);
+        Assert.assertEquals("park vehicle", result);
+    }
 
     @Test
     public void givenParkingLot_WhenLargeVehicleParked_shouldReturnMessage() {
@@ -212,13 +212,13 @@ public class ParkingLotTest {
             this.slot = 2;
             parkingLot = new ParkingLotSystem(capacity, slot);
             parkingLot.addObserver(owner);
-            Vehicle vehicle1 = new Vehicle("suzuki", "MH4R4545", new Driver(Driver.DriverType.NORMAL),"WHITE");
+            Vehicle vehicle1 = new Vehicle("suzuki", "MH4R4545", "SMALL", new Driver(Driver.DriverType.NORMAL), "WHITE");
             parkingLot.park(vehicle1);
-            Vehicle vehicle2 = new Vehicle("suzuki", "MH4R4546",  new Driver(Driver.DriverType.HANDICAP),"WHITE");
+            Vehicle vehicle2 = new Vehicle("suzuki", "MH4R4546", "SMALL", new Driver(Driver.DriverType.HANDICAP), "WHITE");
             parkingLot.park(vehicle2);
-            Vehicle vehicle3 = new Vehicle("suzuki", "MH4R4547", new Driver(Driver.DriverType.NORMAL),"WHITE");
+            Vehicle vehicle3 = new Vehicle("suzuki", "MH4R4547", "SMALL", new Driver(Driver.DriverType.NORMAL), "WHITE");
             parkingLot.park(vehicle3);
-            Vehicle vehicle = new Vehicle("suzuki", "MH4R4547",  new Driver(Driver.DriverType.NORMAL),"WHITE");
+            Vehicle vehicle = new Vehicle("suzuki", "MH4R4547", "SMALL", new Driver(Driver.DriverType.NORMAL), "WHITE");
             parkingLot.park(vehicle);
         } catch (ParkingLotException e) {
             Assert.assertEquals("Lot is full", e.getMessage());
@@ -229,11 +229,11 @@ public class ParkingLotTest {
     public void givenParkingLotSystem_WhenWhiteCarColorPark_shouldReturnCarsLocation() throws ParkingLotException, ParseException {
         parkingLot.addObserver(owner);
         parkingLot.addObserver(police);
-        Vehicle vehicle1 = new Vehicle("suzuki", "MH4R4545", new Driver(Driver.DriverType.NORMAL), "WHITE");
+        Vehicle vehicle1 = new Vehicle("suzuki", "MH4R4545", "SMALL", new Driver(Driver.DriverType.NORMAL), "WHITE");
         parkingLot.park(vehicle1);
-        Vehicle vehicle2 = new Vehicle("suzuki", "MH4R4546",  new Driver(Driver.DriverType.NORMAL), "WHITE");
+        Vehicle vehicle2 = new Vehicle("suzuki", "MH4R4546", "SMALL", new Driver(Driver.DriverType.NORMAL), "WHITE");
         parkingLot.park(vehicle2);
-        Vehicle vehicle = new Vehicle("suzuki", "MH4R4547", new Driver(Driver.DriverType.NORMAL), "WHITE");
+        Vehicle vehicle = new Vehicle("suzuki", "MH4R4547", "SMALL", new Driver(Driver.DriverType.NORMAL), "WHITE");
         String result = parkingLot.park(vehicle);
         parkingLot.serching("WHITE");
         Assert.assertEquals("1,2,3,", police.getVehicleLocation());
@@ -243,11 +243,11 @@ public class ParkingLotTest {
     public void givenParkingLotSystem_WhenCarBrandGiven_ThenReturnCarsLocation() throws ParkingLotException, ParseException {
         parkingLot.addObserver(owner);
         parkingLot.addObserver(police);
-        Vehicle vehicle1 = new Vehicle("Toyota", "MH4R4545", new Driver(Driver.DriverType.NORMAL), "BLUE");
+        Vehicle vehicle1 = new Vehicle("Toyota", "MH4R4545", "SMALL", new Driver(Driver.DriverType.NORMAL, "BLUE");
         parkingLot.park(vehicle1);
-        Vehicle vehicle2 = new Vehicle("BMW", "MH4R4546", new Driver(Driver.DriverType.NORMAL), "WHITE");
+        Vehicle vehicle2 = new Vehicle("BMW", "MH4R4546", "SMALL", new Driver(Driver.DriverType.NORMAL), "WHITE");
         parkingLot.park(vehicle2);
-        Vehicle vehicle = new Vehicle("Toyota", "MH4R4547",  new Driver(Driver.DriverType.NORMAL), "BLUE");
+        Vehicle vehicle = new Vehicle("Toyota", "MH4R4547", "SMALL", new Driver(Driver.DriverType.NORMAL), "BLUE");
         String result = parkingLot.park(vehicle);
         parkingLot.serching("BMW");
         Assert.assertEquals("2,", police.getVehicleLocation());
@@ -258,11 +258,11 @@ public class ParkingLotTest {
         try {
             parkingLot.addObserver(owner);
             parkingLot.addObserver(police);
-            Vehicle vehicle1 = new Vehicle("Toyota", "MH4R4545", new Driver(Driver.DriverType.NORMAL), "BLUE");
+            Vehicle vehicle1 = new Vehicle("Toyota", "MH4R4545", "SMALL", new Driver(Driver.DriverType.NORMAL), "BLUE");
             parkingLot.park(vehicle1);
-            Vehicle vehicle2 = new Vehicle("BMW", "MH4R4546",  new Driver(Driver.DriverType.NORMAL), "WHITE");
+            Vehicle vehicle2 = new Vehicle("BMW", "MH4R4546", "SMALL", new Driver(Driver.DriverType.NORMAL), "WHITE");
             parkingLot.park(vehicle2);
-            Vehicle vehicle = new Vehicle("Toyota", "MH4R4547", new Driver(Driver.DriverType.NORMAL), "BLUE");
+            Vehicle vehicle = new Vehicle("Toyota", "MH4R4547", "SMALL", new Driver(Driver.DriverType.NORMAL), "BLUE");
             parkingLot.park(vehicle);
             parkingLot.serching("01:00", "24:50");
             Assert.assertEquals("1,2,3,", police.getVehicleLocation());

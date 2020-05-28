@@ -32,8 +32,6 @@ public class Owner implements Observer {
     }
     public String getParkingCharge() {
         return parkingCharge;
-
-
     }
 
     public String getParkingSpace() {

@@ -1,12 +1,8 @@
-package com.bl.parkinglot;
-import com.bl.parkinglot.model.Observer;
-
+package com.bl.parkinglot.model;
 import java.util.HashMap;
 import java.util.Map;
-
 public class PoliceDepartment implements Observer {
     private String vehicleLocation;
-
     public Map<String ,String> numberRegister = new HashMap<>();
 
     public PoliceDepartment() {

@@ -4,10 +4,10 @@
  * Date:24/5/2020
  ********************************************************************************************************************/
 package com.bl.parkinglot.service;
-import com.bl.parkinglot.CalculateTime;
-import com.bl.parkinglot.Driver;
-import com.bl.parkinglot.ParkingLotAttendant;
-import com.bl.parkinglot.PoliceDepartment;
+import com.bl.parkinglot.model.CalculateTime;
+import com.bl.parkinglot.model.Driver;
+import com.bl.parkinglot.model.ParkingLotAttendant;
+import com.bl.parkinglot.model.PoliceDepartment;
 import com.bl.parkinglot.model.Observer;
 import com.bl.parkinglot.exception.ParkingLotException;
 import com.bl.parkinglot.model.Vehicle;
@@ -22,6 +22,7 @@ public class ParkingLotSystem {
     PoliceDepartment police;
     private String isFull;
     CalculateTime time;
+    int slot = 3;
     String location = "";
     int froudNumberplate = 0;
 
@@ -30,21 +31,22 @@ public class ParkingLotSystem {
     }
 
     /**
-     * +
-     *
      * @param capacity:-capacity of parking lot
-     * @param slot:slot          of parking lot
-     * @purpose:constructor to put key and null value
-     * key is number and value is object means vehicle
+     * @param slot
+     * @param capacity
      */
+
     public ParkingLotSystem(Integer capacity, int slot) {
+        this.slot = slot;
         attendant = new ParkingLotAttendant(parkingLot, capacity, slot);
         time = new CalculateTime(vehicleTime);
         police = new PoliceDepartment();
         for (Integer key = 1; key <= capacity; key++) {
             parkingLot.put(key, null);
+            vehicleTime.put(key, null);
         }
     }
+    public ParkingLotSystem(){}
 
     /**
      * @param observable:observer
@@ -71,7 +73,7 @@ public class ParkingLotSystem {
             throw new ParkingLotException(ParkingLotException.MyexceptionType.VEHICLE_ALREADY_PARK, "This vehicle already park");
         Integer key = attendant.vehicleParkLotNumber(vehicle);
         parkingLot.replace(key, vehicle);
-        vehicleTime.put(key, CalculateTime.getCurrentTime());
+        vehicleTime.replace(key, CalculateTime.getCurrentTime());
         setStatus("this vehicle charge Rs.10");
         String lotStatus = attendant.isLotFull();
         setStatus(lotStatus);
@@ -92,7 +94,7 @@ public class ParkingLotSystem {
     /**
      * unpark vehicle
      */
-    public String unPark(Vehicle vehicle) {
+    public String unPark(Vehicle vehicle) throws ParkingLotException {
         int key = attendant.occupiedParkingLot(vehicle);
         if (parkingLot.containsValue(vehicle)) {
             parkingLot.replace(key, null);
@@ -105,8 +107,8 @@ public class ParkingLotSystem {
 
     public int serching(String... contains) throws ParseException {
         if (contains.length == 2 && contains[0].contains(":") && contains[1].contains(":"))
-            location=time.vehicleIntime(contains);
-         else {
+            location = time.vehicleIntime(contains);
+        else {
             for (Object o : parkingLot.values()) {
                 int count = 0;
                 for (int index = 0; index < contains.length; index++)
@@ -116,37 +118,40 @@ public class ParkingLotSystem {
                     location += attendant.occupiedParkingLot(o) + ",";
                 else froudNumberplate++;
             }
-            setStatus(location);
-            return froudNumberplate;
         }
-        public void fraudulentPlate() throws ParseException {
-            String fraudPlate ="";
-            int i=1;
-            for (Object o: police.numberRegister.values()) {
-                String keyv=police.numberRegister.keySet().stream().filter(key -> o.equals(police.numberRegister.get(key))).findFirst().get();
-                String value=o.toString();
-                serching(keyv,value);
-                if (froudNumberplate == parkingLot.size())
-                    fraudPlate+=i+",";
-                froudNumberplate=0;i++;
-            }
-            setStatus(fraudPlate);
-        }
+        setStatus(location);
+        return froudNumberplate;
+    }
 
-        public void serchInSlot (Driver.DriverType handicap, String... c){
-            location = "";
-            int upTo = (((c[0].charAt(0) - 64) - 1) * slot) + 1 + slot;
-            for (int key = (((c[0].charAt(0) - 64) - 1) * slot) + 1; key < upTo; key++) {
-                Vehicle o = parkingLot.get(key);
-                String s = o.toString();
-                int count = 0;
-                for (int index = 1; index < c.length; index++)
-                    if (s.contains(c[index]) && o.getDriver().getDriverType().equals(handicap))
-                        count++;
-                    if (count == c.length - 1)
-                    location += attendant.occupiedParkingLot(o) + ",";
+    public void fraudulentPlate() throws ParseException {
+        String fraudPlate = "";
+        int i = 1;
+        for (Object o : police.numberRegister.values()) {
+            String keyv = police.numberRegister.keySet().stream().filter(key -> o.equals(police.numberRegister.get(key))).findFirst().get();
+            String value = o.toString();
+            serching(keyv, value);
+            if (froudNumberplate == parkingLot.size())
+                fraudPlate += i + ",";
+            froudNumberplate = 0;
+            i++;
+        }
+        setStatus(fraudPlate);
+    }
+    
+    public void serchInSlot (Driver.DriverType handicap, String... contain){
+        location = "";
+        int upTo = (((contain[0].charAt(0) - 64) - 1) * slot) + 1 + slot;
+        for (int key = (((contain[0].charAt(0) - 64) - 1) * slot) + 1; key < upTo; key++) {
+            Vehicle vehicle = parkingLot.get(key);
+            String vehicleToString = vehicle.toString();
+            int count = 0;
+            for (int index = 1; index < contain.length; index++)
+                if (vehicleToString.contains(contain[index]) && vehicle.getDriver().getDriverType().equals(handicap))
+                    count++;
+                if (count == contain.length - 1)
+                    location += attendant.occupiedParkingLot(vehicle) + ",";
                 }
                 setStatus(location);
             }
         }
-}
+
