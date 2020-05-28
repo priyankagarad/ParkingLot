@@ -238,5 +238,20 @@ public class ParkingLotTest {
         parkingLot.serching("WHITE");
         Assert.assertEquals("1,2,3,", police.getVehicleLocation());
     }
+
+    @Test
+    public void givenParkingLotSystem_WhenCarBrandGiven_ThenReturnCarsLocation() throws ParkingLotException, ParseException {
+        parkingLot.addObserver(owner);
+        parkingLot.addObserver(police);
+        Vehicle vehicle1 = new Vehicle("Toyota", "MH4R4545", new Driver(Driver.DriverType.NORMAL), "BLUE");
+        parkingLot.park(vehicle1);
+        Vehicle vehicle2 = new Vehicle("BMW", "MH4R4546", new Driver(Driver.DriverType.NORMAL), "WHITE");
+        parkingLot.park(vehicle2);
+        Vehicle vehicle = new Vehicle("Toyota", "MH4R4547",  new Driver(Driver.DriverType.NORMAL), "BLUE");
+        String result = parkingLot.park(vehicle);
+        parkingLot.serching("BMW");
+        Assert.assertEquals("2,", police.getVehicleLocation());
+    }
+
 }
 
