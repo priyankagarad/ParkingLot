@@ -22,7 +22,7 @@ public class ParkingLotSystem {
     int froudNumberplate = 0;
 
     /**
-     * @param capacity:-capacity of parking lot
+     * @param capacity:-capacity means number of vehicle in parking lot
      * @param slot
      * @param capacity
      */
@@ -41,7 +41,7 @@ public class ParkingLotSystem {
     public ParkingLotSystem(){}
 
     /**
-     * @param observable:observer
+     * @param observable:observer Pattern
      */
     public void addObserver(com.bl.parkinglot.model.Observer observable) {
         this.observableList.add(observable);

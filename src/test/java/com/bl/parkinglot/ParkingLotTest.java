@@ -256,7 +256,7 @@ public class ParkingLotTest {
     }
 
     @Test
-    public void givenParkingLotSystem_WhenVehicleParkLast30Minuts_shouldReturnCarsLocation() throws ParkingLotException {
+    public void givenParkingLotSystem_WhenVehicleParkLast30Minuts_shouldReturnCarsLocation() throws ParseException {
         try {
             parkingLot.addObserver(owner);
             parkingLot.addObserver(police);
@@ -268,7 +268,27 @@ public class ParkingLotTest {
             parkingLot.park(vehicle);
             parkingLot.serching("01:00", "24:50");
             Assert.assertEquals("1,2,3,", police.getVehicleLocation());
-        } catch(ParkingLotException | ParseException e){
+        } catch(ParkingLotException e){
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void givenParkingLotSystem_WhenParkedSmallVehicleAndDriverIsHandicap_ShouldReturnDetailsOfVehicle(){
+    try {
+        this.capacity = 20;
+        this.slot = 5;
+        parkingLot = new ParkingLotSystem(capacity, slot);
+        parkingLot.addObserver(police);
+        for (int i = 1; i <= 10; i++) {
+            parkingLot.park(new Vehicle("Toyota", "MH4R4545", "SMALL", new Driver(Driver.DriverType.NORMAL), "BLUE"));
+            parkingLot.park(new Vehicle("suzuki", "MH4R4546", "SMALL", new Driver(Driver.DriverType.HANDICAP), "WHITE"));
+        }
+        parkingLot.searchInSlot(Driver.DriverType.HANDICAP,"B","SMALL");
+        Assert.assertEquals("8,9,10,", police.getVehicleLocation());
+        parkingLot.searchInSlot(Driver.DriverType.HANDICAP,"D","SMALL");
+        Assert.assertEquals("20,", police.getVehicleLocation());
+        } catch (ParkingLotException e) {
             e.printStackTrace();
         }
     }
