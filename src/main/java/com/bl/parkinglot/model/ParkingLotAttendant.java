@@ -1,12 +1,10 @@
 package com.bl.parkinglot.model;
 import com.bl.parkinglot.exception.ParkingLotException;
-import com.bl.parkinglot.service.ParkingLotSystem;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 public class ParkingLotAttendant {
-    ParkingLotSystem parkingLotSystem;
     Integer capacity;
     int slot;
     Map<Integer,Integer> lots = new HashMap<>();

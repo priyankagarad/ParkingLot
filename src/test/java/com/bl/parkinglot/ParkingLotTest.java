@@ -25,7 +25,7 @@ public class ParkingLotTest {
     @Test
     public void givenVehicle_WhenPark_shouldReturnResult()  throws ParkingLotException{
         try {
-            Vehicle vehicle = new Vehicle("suzuki", "MH4R4545", "SMALL", new Driver(Driver.NORMAL), "WHITE");
+            Vehicle vehicle = new Vehicle("suzuki", "MH4R4545", "SMALL", new Driver(Driver.DriverType.NORMAL),"WHITE");
             String result = parkingLot.park(vehicle);
             Assert.assertEquals("park vehicle", result);
         } catch (ParkingLotException e) { }
@@ -55,7 +55,6 @@ public class ParkingLotTest {
 
     @Test
     public void givenParkingLot_WhenFull_shouldInformOwner() {
-        parkingLot.addObserver(owner);
         try {
             parkingLot.addObserver(owner);
             Vehicle vehicle1 = new Vehicle("suzuki", "MH4R4545", "SMALL", new Driver(Driver.DriverType.NORMAL), "WHITE");
@@ -84,6 +83,7 @@ public class ParkingLotTest {
     @Test
     public void givenParkingLot_whenFull_shouldInformAirportSecurity() {
         try {
+            parkingLot.addObserver(airportSecurity);
             Vehicle vehicle1 = new Vehicle("suzuki", "" + "MH4R4545", "SMALL", new Driver(Driver.DriverType.NORMAL), "WHITE");
             parkingLot.park(vehicle1);
             Vehicle vehicle2 = new Vehicle("suzuki", "MH4R4546", "SMALL", new Driver(Driver.DriverType.NORMAL), "WHITE");
@@ -162,6 +162,7 @@ public class ParkingLotTest {
              Assert.assertEquals("Full Lot 2", owner.getParkingFull());
         } catch (ParkingLotException e) { }
     }
+
     @Test
      public void givenHandicapDriver_WhenNearestFreeSpace_shouldParkCar () {
         this.capacity = 4;
@@ -230,7 +231,7 @@ public class ParkingLotTest {
     public void givenParkingLotSystem_WhenCarBrandGiven_ThenReturnCarsLocation() throws ParkingLotException, ParseException {
         parkingLot.addObserver(owner);
         parkingLot.addObserver(police);
-        Vehicle vehicle1 = new Vehicle("Toyota", "MH4R4545", "SMALL", new Driver(Driver.DriverType.NORMAL, "BLUE");
+        Vehicle vehicle1 = new Vehicle("Toyota", "MH4R4545", "SMALL", new Driver(Driver.DriverType.NORMAL), "BLUE");
         parkingLot.park(vehicle1);
         Vehicle vehicle2 = new Vehicle("BMW", "MH4R4546", "SMALL", new Driver(Driver.DriverType.NORMAL), "WHITE");
         parkingLot.park(vehicle2);
@@ -308,5 +309,6 @@ public class ParkingLotTest {
         }
     }
 }
+
 
 

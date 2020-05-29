@@ -12,7 +12,7 @@ import java.util.*;
 public class ParkingLotSystem {
     public LinkedHashMap<Integer, Vehicle> parkingLot = new LinkedHashMap<>();
     public Map<Integer, Object> vehicleTime = new HashMap<>();
-    private List<com.bl.parkinglot.model.Observer> observableList = new ArrayList<>();
+    private List<Observer> observableList = new ArrayList<>();
     ParkingLotAttendant attendant;
     PoliceDepartment police;
     private String isFull;

@@ -13,6 +13,7 @@ public class AirportSecurity implements Observer {
     /**
      * method given update of parking lot is full or not
      */
+
      @Override
     public void update(Object status) {
         this.setParkingSlotFullOrNot((String) status);

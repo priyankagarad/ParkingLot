@@ -5,7 +5,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-
 public class CalculateTime {
     public Map<Integer,Object> vehicleTime = new HashMap<>();
     String location="";

@@ -1,5 +1,4 @@
 package com.bl.parkinglot.model;
-import java.sql.Driver;
 public class Vehicle {
     private String vehicleName;
     private String vehicleNumber;
