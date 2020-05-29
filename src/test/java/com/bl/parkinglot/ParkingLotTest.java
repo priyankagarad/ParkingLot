@@ -291,6 +291,22 @@ public class ParkingLotTest {
              Assert.assertEquals("20,", police.getVehicleLocation());
         } catch (ParkingLotException e) { }
     }
+
+    @Test
+    public void givenParkingLotSystem_WhenFraudulentPlate_shouldReturnCarsLocation() {
+        try {
+            parkingLot.addObserver(police);
+            Vehicle vehicle1 = new Vehicle("Toyota", "MH4R4545", "SMALL",new Driver(Driver.DriverType.NORMAL), "BLUE");
+            parkingLot.park(vehicle1);
+            Vehicle vehicle2 = new Vehicle("BMW", "MH4R4546", "SMALL", new Driver(Driver.DriverType.NORMAL), "WHITE");
+            parkingLot.park(vehicle2);
+            Vehicle vehicle = new Vehicle("Toyota", "MH4R4547", "SMALL", new Driver(Driver.DriverType.NORMAL), "BLUE");
+            parkingLot.park(vehicle);
+            parkingLot.fraudulentPlate();
+            Assert.assertEquals("2,", police.getVehicleLocation());
+        } catch (Exception e) {
+        }
+    }
 }
 
 

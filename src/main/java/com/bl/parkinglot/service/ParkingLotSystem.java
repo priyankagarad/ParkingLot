@@ -22,9 +22,7 @@ public class ParkingLotSystem {
     int froudNumberplate = 0;
 
     /**
-     * @param capacity:-capacity means number of vehicle in parking lot
-     * @param slot
-     * @param capacity
+     * constructor to put key and null value
      */
 
     public ParkingLotSystem(Integer capacity, int slot) {
@@ -41,8 +39,9 @@ public class ParkingLotSystem {
     public ParkingLotSystem(){}
 
     /**
-     * @param observable:observer Pattern
+     *add object to observableList
      */
+
     public void addObserver(com.bl.parkinglot.model.Observer observable) {
         this.observableList.add(observable);
     }
@@ -50,6 +49,7 @@ public class ParkingLotSystem {
     /**
      * send notification
      */
+
     public void setStatus(String isFull) {
         this.isFull = isFull;
         for (Observer observable : this.observableList) {
@@ -58,8 +58,9 @@ public class ParkingLotSystem {
     }
 
     /**
-     * park vehicle and check parking lot
+     * @purpose:Check vehicle is park in parking lot
      */
+
     public String park(Vehicle vehicle) throws ParkingLotException {
         if (parkingLot.containsValue(vehicle))
             throw new ParkingLotException(ParkingLotException.MyexceptionType.VEHICLE_ALREADY_PARK, "This vehicle already park");
@@ -73,8 +74,9 @@ public class ParkingLotSystem {
     }
 
     /**
-     * Check Vehicle is present or not
+     * @purpose:Check Vehicle is present or not
      */
+
     public String isVehiclePark(Vehicle vehicle) throws ParkingLotException {
         if (parkingLot.containsValue(vehicle))
             return "vehicle park in lot number " + attendant.occupiedParkingLot(vehicle);
@@ -84,8 +86,9 @@ public class ParkingLotSystem {
     }
 
     /**
-     * unpark vehicle
+     * @purpose:check vehicle unPark Information
      */
+
     public String unPark(Vehicle vehicle) throws ParkingLotException {
         int key = attendant.occupiedParkingLot(vehicle);
         if (parkingLot.containsValue(vehicle)) {
@@ -96,6 +99,10 @@ public class ParkingLotSystem {
             throw new ParkingLotException(ParkingLotException.MyexceptionType.VEHICLE_NOT_PARK,
                     "This vehicle not park in my parking lot");
     }
+
+    /**
+     * @purpose:Check vehicle Information is present in ParkingLotAttendant
+     **/
 
     public int serching(String... arg) throws ParseException {
         if (arg.length == 2 && arg[0].contains(":") && arg[1].contains(":"))
@@ -115,6 +122,10 @@ public class ParkingLotSystem {
         return froudNumberplate;
     }
 
+    /**
+     * @purpose:Check vehicle number is Register in Police Department
+     */
+
     public void fraudulentPlate() throws ParseException {
         String fraudPlate = "";
         int i = 1;
@@ -129,7 +140,11 @@ public class ParkingLotSystem {
         }
         setStatus(fraudPlate);
     }
-    
+
+    /**
+     * @purpose:Search Vehicle related Information is in parking lot
+     */
+
     public void searchInSlot (Driver.DriverType handicap, String... arg){
         location = "";
         int upTo = (((arg[0].charAt(0) - 64) - 1) * slot) + 1 + slot;
