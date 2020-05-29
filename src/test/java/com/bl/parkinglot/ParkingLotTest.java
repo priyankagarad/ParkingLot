@@ -28,10 +28,8 @@ public class ParkingLotTest {
             Vehicle vehicle = new Vehicle("suzuki", "MH4R4545", "SMALL", new Driver(Driver.NORMAL), "WHITE");
             String result = parkingLot.park(vehicle);
             Assert.assertEquals("park vehicle", result);
-        } catch (ParkingLotException e) {
-        }
+        } catch (ParkingLotException e) { }
     }
-
 
     @Test
     public void givenVehicle_WhenAlreadyParked_shouldReturnException() {
@@ -51,8 +49,7 @@ public class ParkingLotTest {
             parkingLot.park(vehicle);
             String result = parkingLot.unPark(vehicle);
             Assert.assertEquals("unpark", result);
-        } catch (ParkingLotException e) {
-        }
+        } catch (ParkingLotException e) { }
     }
 
 
@@ -68,8 +65,7 @@ public class ParkingLotTest {
             Vehicle vehicle = new Vehicle("suzuki", "MH4R4547", "SMALL", new Driver(Driver.DriverType.NORMAL), "WHITE");
             parkingLot.park(vehicle);
             Assert.assertEquals("Full Lot 1", owner.getParkingFull());
-        } catch (Exception e) {
-        }
+        } catch (Exception e) { }
     }
 
     @Test
@@ -82,8 +78,7 @@ public class ParkingLotTest {
             parkingLot.park(vehicle2);
             String parkingFull=owner.getParkingFull();
              Assert.assertTrue(parkingFull,true);
-        } catch (ParkingLotException e) {
-     }
+        } catch (ParkingLotException e) { }
     }
 
     @Test
@@ -96,9 +91,7 @@ public class ParkingLotTest {
             Vehicle vehicle = new Vehicle("suzuki", "MH4R4547", "SMALL", new Driver(Driver.DriverType.NORMAL), "WHITE");
             parkingLot.park(vehicle);
             Assert.assertEquals("Full Lot 1", airportSecurity.getParkingSlotFullOrNot());
-        } catch (Exception e) {
-        }
-
+        } catch (Exception e) { }
     }
 
     @Test
@@ -137,9 +130,7 @@ public class ParkingLotTest {
             parkingLot.park(vehicle1);
             String result = parkingLot.isVehiclePark(vehicle);
             Assert.assertEquals("vehicle park in lot number 1", result);
-        } catch (ParkingLotException e) {
-            e.printStackTrace();
-        }
+        } catch (ParkingLotException e) { }
     }
 
      @Test
@@ -149,34 +140,29 @@ public class ParkingLotTest {
              Vehicle vehicle = new Vehicle("suzuki", "MH4R4545", "SMALL", new Driver(Driver.DriverType.NORMAL),"WHITE");
              parkingLot.park(vehicle);
              Assert.assertEquals("this vehicle charge Rs.10", owner.getParkingCharge());
-         } catch (ParkingLotException e) {
-             e.printStackTrace();
-         }
+         } catch (ParkingLotException e) { }
     }
 
     @Test
     public void givenParkingAttendant_WhenEvenlyDistribution_shouldReturnMessage () {
         try {
-            this.capacity = 4;
-            this.slot = 2;
-            parkingLot = new ParkingLotSystem(capacity, slot);
-            parkingLot.addObserver(owner);
-            Vehicle vehicle = new Vehicle("suzuki", "MH4R4545", "SMALL", new Driver(Driver.DriverType.NORMAL), "WHITE");
-            parkingLot.park(vehicle);
-            Vehicle vehicle1 = new Vehicle("suzuki", "MH4R4546", "SMALL", new Driver(Driver.DriverType.NORMAL), "WHITE");
-            parkingLot.park(vehicle1);
-            Vehicle vehicle2 = new Vehicle("suzuki", "MH4R4547", "SMALL", new Driver(Driver.DriverType.NORMAL), "WHITE");
-            parkingLot.park(vehicle2);
-            Assert.assertEquals("Full Lot 1", owner.getParkingFull());
-            Vehicle vehicle3 = new Vehicle("suzuki", "MH4R4548", "SMALL", new Driver(Driver.DriverType.NORMAL), "WHITE");
-            parkingLot.park(vehicle3);
-            Assert.assertEquals("Full Lot 2", owner.getParkingFull());
-        } catch (ParkingLotException e) {
-                 e.printStackTrace();
-             }
-     }
-
-     @Test
+             this.capacity = 4;
+             this.slot = 2;
+             parkingLot = new ParkingLotSystem(capacity, slot);
+             parkingLot.addObserver(owner);
+             Vehicle vehicle = new Vehicle("suzuki", "MH4R4545", "SMALL", new Driver(Driver.DriverType.NORMAL), "WHITE");
+             parkingLot.park(vehicle);
+             Vehicle vehicle1 = new Vehicle("suzuki", "MH4R4546", "SMALL", new Driver(Driver.DriverType.NORMAL), "WHITE");
+             parkingLot.park(vehicle1);
+             Vehicle vehicle2 = new Vehicle("suzuki", "MH4R4547", "SMALL", new Driver(Driver.DriverType.NORMAL), "WHITE");
+             parkingLot.park(vehicle2);
+             Assert.assertEquals("Full Lot 1", owner.getParkingFull());
+             Vehicle vehicle3 = new Vehicle("suzuki", "MH4R4548", "SMALL", new Driver(Driver.DriverType.NORMAL), "WHITE");
+             parkingLot.park(vehicle3);
+             Assert.assertEquals("Full Lot 2", owner.getParkingFull());
+        } catch (ParkingLotException e) { }
+    }
+    @Test
      public void givenHandicapDriver_WhenNearestFreeSpace_shouldParkCar () {
         this.capacity = 4;
         this.slot = 2;
@@ -240,7 +226,6 @@ public class ParkingLotTest {
         Assert.assertEquals("1,3,", police.getVehicleLocation());
     }
 
-
     @Test
     public void givenParkingLotSystem_WhenCarBrandGiven_ThenReturnCarsLocation() throws ParkingLotException, ParseException {
         parkingLot.addObserver(owner);
@@ -268,29 +253,44 @@ public class ParkingLotTest {
             parkingLot.park(vehicle);
             parkingLot.serching("01:00", "24:50");
             Assert.assertEquals("1,2,3,", police.getVehicleLocation());
-        } catch(ParkingLotException e){
-            e.printStackTrace();
-        }
+        } catch(ParkingLotException e){ }
     }
 
     @Test
     public void givenParkingLotSystem_WhenParkedSmallVehicleAndDriverIsHandicap_ShouldReturnDetailsOfVehicle(){
-    try {
-        this.capacity = 20;
-        this.slot = 5;
-        parkingLot = new ParkingLotSystem(capacity, slot);
-        parkingLot.addObserver(police);
-        for (int i = 1; i <= 10; i++) {
+        try {
+            this.capacity = 20;
+            this.slot = 5;
+            parkingLot = new ParkingLotSystem(capacity, slot);
+            parkingLot.addObserver(police);
+            for (int i = 1; i <= 10; i++) {
             parkingLot.park(new Vehicle("Toyota", "MH4R4545", "SMALL", new Driver(Driver.DriverType.NORMAL), "BLUE"));
             parkingLot.park(new Vehicle("suzuki", "MH4R4546", "SMALL", new Driver(Driver.DriverType.HANDICAP), "WHITE"));
-        }
-        parkingLot.searchInSlot(Driver.DriverType.HANDICAP,"B","SMALL");
-        Assert.assertEquals("8,9,10,", police.getVehicleLocation());
-        parkingLot.searchInSlot(Driver.DriverType.HANDICAP,"D","SMALL");
-        Assert.assertEquals("20,", police.getVehicleLocation());
-        } catch (ParkingLotException e) {
-            e.printStackTrace();
-        }
+           }
+            parkingLot.searchInSlot(Driver.DriverType.HANDICAP,"B","SMALL");
+            Assert.assertEquals("8,9,10,", police.getVehicleLocation());
+            parkingLot.searchInSlot(Driver.DriverType.HANDICAP,"D","SMALL");
+            Assert.assertEquals("20,", police.getVehicleLocation());
+        } catch (ParkingLotException e) { }
+    }
+
+    @Test
+    public void givenParkingLotSystem_WhenParkedLargeVehicleAndDriverIsHandicap_ShouldReturnDetailsOfVehicle() {
+        try {
+            this.capacity = 20;
+            this.slot = 5;
+            parkingLot = new ParkingLotSystem(capacity, slot);
+            parkingLot.addObserver(police);
+            for (int i = 1; i <= 10; i++) {
+                parkingLot.park(new Vehicle("Toyota", "MH4R4545", "LARGE", new Driver(Driver.DriverType.NORMAL), "BLUE"));
+                parkingLot.park(new Vehicle("suzuki", "MH4R4546", "LARGE", new Driver(Driver.DriverType.HANDICAP), "WHITE"));
+            }
+             parkingLot.searchInSlot(Driver.DriverType.HANDICAP,"B","LARGE");
+             Assert.assertEquals("8,9,10,", police.getVehicleLocation());
+             parkingLot.searchInSlot(Driver.DriverType.HANDICAP,"D","LARGE");
+             Assert.assertEquals("20,", police.getVehicleLocation());
+        } catch (ParkingLotException e) { }
     }
 }
+
 
