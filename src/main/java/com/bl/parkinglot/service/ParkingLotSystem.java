@@ -36,8 +36,6 @@ public class ParkingLotSystem {
         }
     }
 
-    public ParkingLotSystem(){}
-
     /**
      *add object to observableList
      */
@@ -104,17 +102,17 @@ public class ParkingLotSystem {
      * @purpose:Check vehicle Information is present in ParkingLotAttendant
      **/
 
-    public int serching(String... arg) throws ParseException {
+    public int searching(String... arg) throws ParseException {
         if (arg.length == 2 && arg[0].contains(":") && arg[1].contains(":"))
             location = time.vehicleInTime(arg);
         else {
-            for (Object o : parkingLot.values()) {
+            for (Object vehicle : parkingLot.values()) {
                 int count = 0;
                 for (int index = 0; index < arg.length; index++)
-                    if (o.toString().contains(arg[index]))
+                    if (vehicle.toString().contains(arg[index]))
                         count++;
                 if (count == arg.length)
-                    location += attendant.occupiedParkingLot(o) + ",";
+                    location += attendant.occupiedParkingLot(vehicle) + ",";
                 else froudNumberplate++;
             }
         }
@@ -129,10 +127,10 @@ public class ParkingLotSystem {
     public void fraudulentPlate() throws ParseException {
         String fraudPlate = "";
         int i = 1;
-        for (Object o : police.numberRegister.values()) {
-            String keyv = police.numberRegister.keySet().stream().filter(key -> o.equals(police.numberRegister.get(key))).findFirst().get();
-            String value = o.toString();
-            serching(keyv, value);
+        for (Object vehicle : police.numberRegister.values()) {
+            String keyVehicle = police.numberRegister.keySet().stream().filter(key -> vehicle.equals(police.numberRegister.get(key))).findFirst().get();
+            String value = vehicle.toString();
+            searching(keyVehicle, value);
             if (froudNumberplate == parkingLot.size())
                 fraudPlate += i + ",";
             froudNumberplate = 0;

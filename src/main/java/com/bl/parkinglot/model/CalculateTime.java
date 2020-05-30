@@ -3,10 +3,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 public class CalculateTime {
-    public Map<Integer,Object> vehicleTime = new HashMap<>();
+    public Map<Integer,Object> vehicleTime;
     String location="";
 
     public CalculateTime(Map<Integer, Object> vehicleTime) {

@@ -64,19 +64,6 @@ public class ParkingLotTest {
             Vehicle vehicle = new Vehicle("suzuki", "MH4R4547", "SMALL", new Driver(Driver.DriverType.NORMAL), "WHITE");
             parkingLot.park(vehicle);
             Assert.assertEquals("Full Lot 1", owner.getParkingFull());
-        } catch (Exception e) { }
-    }
-
-    @Test
-    public void givenParkingLotCapacityIs2_whenFull_ShouldInformOwner(){
-        try{
-            parkingLot.addObserver(owner);
-            Vehicle vehicle1 = new Vehicle("suzuki", "MH4R4545", "SMALL", new Driver(Driver.DriverType.NORMAL), "WHITE");
-            parkingLot.park(vehicle1);
-            Vehicle vehicle2 = new Vehicle("suzuki", "MH4R4546", "SMALL", new Driver(Driver.DriverType.NORMAL), "WHITE");
-            parkingLot.park(vehicle2);
-            String parkingFull=owner.getParkingFull();
-             Assert.assertTrue(parkingFull,true);
         } catch (ParkingLotException e) { }
     }
 
@@ -89,7 +76,7 @@ public class ParkingLotTest {
             Vehicle vehicle2 = new Vehicle("suzuki", "MH4R4546", "SMALL", new Driver(Driver.DriverType.NORMAL), "WHITE");
             parkingLot.park(vehicle2);
             Vehicle vehicle = new Vehicle("suzuki", "MH4R4547", "SMALL", new Driver(Driver.DriverType.NORMAL), "WHITE");
-            parkingLot.park(vehicle);
+           parkingLot.park(vehicle);
             Assert.assertEquals("Full Lot 1", airportSecurity.getParkingSlotFullOrNot());
         } catch (Exception e) { }
     }
@@ -100,7 +87,7 @@ public class ParkingLotTest {
             Vehicle vehicle1 = new Vehicle("suzuki", "MH4R4546", "SMALL", new Driver(Driver.DriverType.NORMAL), "WHITE");
             parkingLot.unPark(vehicle1);
             Vehicle vehicle2 = new Vehicle("suzuki", "MH4R4547", "SMALL", new Driver(Driver.DriverType.NORMAL), "WHITE");
-            parkingLot.unPark(vehicle2);
+            parkingLot.unPark(vehicle1);
         } catch (ParkingLotException e) {
             Assert.assertEquals("This vehicle not park in my parking lot", e.getMessage());
         }
@@ -154,10 +141,10 @@ public class ParkingLotTest {
              parkingLot.park(vehicle);
              Vehicle vehicle1 = new Vehicle("suzuki", "MH4R4546", "SMALL", new Driver(Driver.DriverType.NORMAL), "WHITE");
              parkingLot.park(vehicle1);
-             Vehicle vehicle2 = new Vehicle("suzuki", "MH4R4547", "SMALL", new Driver(Driver.DriverType.NORMAL), "WHITE");
+            Vehicle vehicle2 = new Vehicle("suzuki", "MH4R4547", "SMALL", new Driver(Driver.DriverType.NORMAL), "WHITE");
              parkingLot.park(vehicle2);
-             Assert.assertEquals("Full Lot 1", owner.getParkingFull());
-             Vehicle vehicle3 = new Vehicle("suzuki", "MH4R4548", "SMALL", new Driver(Driver.DriverType.NORMAL), "WHITE");
+            Assert.assertEquals("Full Lot 1", owner.getParkingFull());
+            Vehicle vehicle3 = new Vehicle("suzuki", "MH4R4548", "SMALL", new Driver(Driver.DriverType.NORMAL), "WHITE");
              parkingLot.park(vehicle3);
              Assert.assertEquals("Full Lot 2", owner.getParkingFull());
         } catch (ParkingLotException e) { }
@@ -209,7 +196,7 @@ public class ParkingLotTest {
         parkingLot.park(vehicle2);
         Vehicle vehicle = new Vehicle("suzuki", "MH4R4547", "SMALL", new Driver(Driver.DriverType.NORMAL), "WHITE");
         String result = parkingLot.park(vehicle);
-        parkingLot.serching("WHITE");
+        parkingLot.searching("WHITE");
         Assert.assertEquals("1,2,3,", police.getVehicleLocation());
     }
 
@@ -223,7 +210,7 @@ public class ParkingLotTest {
         parkingLot.park(vehicle2);
         Vehicle vehicle = new Vehicle("Toyota", "MH4R4547", "SMALL", new Driver(Driver.DriverType.NORMAL), "BLUE");
         String result = parkingLot.park(vehicle);
-        parkingLot.serching("Toyota", "BLUE");
+        parkingLot.searching("Toyota", "BLUE");
         Assert.assertEquals("1,3,", police.getVehicleLocation());
     }
 
@@ -237,7 +224,7 @@ public class ParkingLotTest {
         parkingLot.park(vehicle2);
         Vehicle vehicle = new Vehicle("Toyota", "MH4R4547", "SMALL", new Driver(Driver.DriverType.NORMAL), "BLUE");
         String result = parkingLot.park(vehicle);
-        parkingLot.serching("BMW");
+        parkingLot.searching("BMW");
         Assert.assertEquals("2,", police.getVehicleLocation());
     }
 
@@ -252,7 +239,7 @@ public class ParkingLotTest {
             parkingLot.park(vehicle2);
             Vehicle vehicle = new Vehicle("Toyota", "MH4R4547", "SMALL", new Driver(Driver.DriverType.NORMAL), "BLUE");
             parkingLot.park(vehicle);
-            parkingLot.serching("01:00", "24:50");
+            parkingLot.searching("01:00", "24:50");
             Assert.assertEquals("1,2,3,", police.getVehicleLocation());
         } catch(ParkingLotException e){ }
     }

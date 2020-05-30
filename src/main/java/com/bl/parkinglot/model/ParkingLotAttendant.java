@@ -18,6 +18,7 @@ public class ParkingLotAttendant {
 
     /**
      *Find Empty parking slot
+     * return the key of vehicle
      */
     public int vehicleParkLotNumber(Vehicle vehicle) throws ParkingLotException {
         Integer key=0;
@@ -46,22 +47,22 @@ public class ParkingLotAttendant {
 
     public int occupiedParkingLot(Object vehicle){
         int k = 0;
-        for (Object o: parkingLot.values()) {
+        for (Object vehicleVariable: parkingLot.values()) {
             k++;
-            if (o==vehicle)
+            if (vehicleVariable==vehicle)
                 return k;
         }
         return k+1;
     }
 
     /**+
-     *Empty space in lots
+     *Empty space in Parking lots
      */
 
     public int checkLot(){
         int i=0,count=0,key=0;
-        for (Object o:parkingLot.values()) {
-            if (o==null)
+        for (Object vehicle:parkingLot.values()) {
+            if (vehicle==null)
                 count++;
             i++;
             if (i%slot==0){
@@ -72,9 +73,6 @@ public class ParkingLotAttendant {
         return minimumCarsLots();
     }
 
-    /**+
-     *check minimum cars in lot
-     * */
 
     public int minimumCarsLots(){
         return lots.keySet().stream().filter(key -> Collections.max(lots.values()).equals(lots.get(key)))
@@ -89,9 +87,9 @@ public class ParkingLotAttendant {
         checkLot();
         Integer value = 0, lotNumber = 0;
         String lot = "";
-        for (Object o:lots.values()){
+        for (Object vehicle:lots.values()){
             lotNumber++;
-            if (o==value)
+            if (vehicle==value)
                 lot = "Full Lot "+lotNumber;
         }
         return lot;
