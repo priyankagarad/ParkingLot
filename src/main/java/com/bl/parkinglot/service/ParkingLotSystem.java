@@ -1,12 +1,14 @@
 /*********************************************************************************************************************
- * @purpose:ParkingLot System Class Define the the function of park,unpark the Vehicle and set The capacity of vehicle
- * @Author:priyanka garad
+ * @purpose:To park and Unpark vehicle And Informing Parking Lot full,SpaceAvailable To Observer
+ * @Author:priyanka Garad
  * Date:24/5/2020
  ********************************************************************************************************************/
 package com.bl.parkinglot.service;
+import com.bl.parkinglot.enums.Driver;
 import com.bl.parkinglot.exception.ParkingLotException;
 import com.bl.parkinglot.model.*;
-import com.bl.parkinglot.model.Observer;
+import com.bl.parkinglot.observer.Observer;
+import com.bl.parkinglot.observer.PoliceDepartment;
 import java.text.ParseException;
 import java.util.*;
 public class ParkingLotSystem {
@@ -16,19 +18,15 @@ public class ParkingLotSystem {
     ParkingLotAttendant attendant;
     PoliceDepartment police;
     private String isFull;
-    CalculateTime time;
+    ParkingSlotTime time;
     int slot = 3;
     String location = "";
-    int froudNumberplate = 0;
-
-    /**
-     * constructor to put key and null value
-     */
+    int fraudNumberplate = 0;
 
     public ParkingLotSystem(Integer capacity, int slot) {
         this.slot = slot;
         attendant = new ParkingLotAttendant(parkingLot, capacity, slot);
-        time = new CalculateTime(vehicleTime);
+        time = new ParkingSlotTime(vehicleTime);
         police = new PoliceDepartment();
         for (Integer key = 1; key <= capacity; key++) {
             parkingLot.put(key, null);
@@ -37,17 +35,16 @@ public class ParkingLotSystem {
     }
 
     /**
-     *add object to observableList
+     *@purpose: add object to observableList
      */
-
-    public void addObserver(com.bl.parkinglot.model.Observer observable) {
+    public void addObserver(Observer observable) {
         this.observableList.add(observable);
     }
 
     /**
-     * send notification
+     * @purpose:Send notification to observer
+     * @param isFull
      */
-
     public void setStatus(String isFull) {
         this.isFull = isFull;
         for (Observer observable : this.observableList) {
@@ -56,15 +53,17 @@ public class ParkingLotSystem {
     }
 
     /**
-     * @purpose:Check vehicle is park in parking lot
+     * @purpose : Park Vehicle in Paring Lot
+     * @param vehicle
+     * @return : return message vehicle Park
+     * @throws ParkingLotException : Vehicle Already Park the throw Exception
      */
-
     public String park(Vehicle vehicle) throws ParkingLotException {
         if (parkingLot.containsValue(vehicle))
             throw new ParkingLotException(ParkingLotException.MyexceptionType.VEHICLE_ALREADY_PARK, "This vehicle already park");
         Integer key = attendant.vehicleParkLotNumber(vehicle);
         parkingLot.replace(key, vehicle);
-        vehicleTime.replace(key, CalculateTime.getCurrentTime());
+        vehicleTime.replace(key, ParkingSlotTime.getCurrentTime());
         setStatus("this vehicle charge Rs.10");
         String lotStatus = attendant.isLotFull();
         setStatus(lotStatus);
@@ -72,9 +71,11 @@ public class ParkingLotSystem {
     }
 
     /**
-     * @purpose:Check Vehicle is present or not
+     * @Purpose: Check Vehicle is Park or not in Parking Lot
+     * @param vehicle
+     * @return : return vehicle Lot Number
+     * @throws ParkingLotException :Vehicle is not present in parking Lot then throw exception
      */
-
     public String isVehiclePark(Vehicle vehicle) throws ParkingLotException {
         if (parkingLot.containsValue(vehicle))
             return "vehicle park in lot number " + attendant.occupiedParkingLot(vehicle);
@@ -84,9 +85,9 @@ public class ParkingLotSystem {
     }
 
     /**
-     * @purpose:check vehicle unPark Information
+     * @purpose:check vehicle is unPark from Parking lot
+     * @param: vehicle
      */
-
     public String unPark(Vehicle vehicle) throws ParkingLotException {
         int key = attendant.occupiedParkingLot(vehicle);
         if (parkingLot.containsValue(vehicle)) {
@@ -99,9 +100,11 @@ public class ParkingLotSystem {
     }
 
     /**
-     * @purpose:Check vehicle Information is present in ParkingLotAttendant
-     **/
-
+     * @purpose: Search Method Check Position of vehicle in parking Lot,vehicle present ot not ;
+     * @param arg
+     * @return : FraduPlateNumber
+     * @throws ParseException
+     */
     public int searching(String... arg) throws ParseException {
         if (arg.length == 2 && arg[0].contains(":") && arg[1].contains(":"))
             location = time.vehicleInTime(arg);
@@ -113,17 +116,17 @@ public class ParkingLotSystem {
                         count++;
                 if (count == arg.length)
                     location += attendant.occupiedParkingLot(vehicle) + ",";
-                else froudNumberplate++;
+                else fraudNumberplate++;
             }
         }
         setStatus(location);
-        return froudNumberplate;
+        return fraudNumberplate;
     }
 
     /**
-     * @purpose:Check vehicle number is Register in Police Department
+     * @purpose:Fraudu Plate Number search
+     * @return:return Status of fraudPlateNumber
      */
-
     public void fraudulentPlate() throws ParseException {
         String fraudPlate = "";
         int i = 1;
@@ -131,18 +134,19 @@ public class ParkingLotSystem {
             String keyVehicle = police.numberRegister.keySet().stream().filter(key -> vehicle.equals(police.numberRegister.get(key))).findFirst().get();
             String value = vehicle.toString();
             searching(keyVehicle, value);
-            if (froudNumberplate == parkingLot.size())
+            if (fraudNumberplate == parkingLot.size())
                 fraudPlate += i + ",";
-            froudNumberplate = 0;
+            fraudNumberplate = 0;
             i++;
         }
         setStatus(fraudPlate);
     }
 
     /**
-     * @purpose:Search Vehicle related Information is in parking lot
+     * @purpose: search vehicle slot number
+     * @param handicap: driver type
+     * @param arg
      */
-
     public void searchInSlot (Driver.DriverType handicap, String... arg){
         location = "";
         int upTo = (((arg[0].charAt(0) - 64) - 1) * slot) + 1 + slot;

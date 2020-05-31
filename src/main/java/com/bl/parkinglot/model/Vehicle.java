@@ -1,4 +1,10 @@
+/***********************************************************************************************************************
+ * @purpose: Define vehicle Information
+ * @Author:priyanka Garad
+ * @Date:24/5/2020
+ ***********************************************************************************************************************/
 package com.bl.parkinglot.model;
+import com.bl.parkinglot.enums.Driver;
 public class Vehicle {
     private String vehicleName;
     private String vehicleNumber;

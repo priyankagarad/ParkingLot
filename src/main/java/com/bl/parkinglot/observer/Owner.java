@@ -1,4 +1,9 @@
-package com.bl.parkinglot.model;
+/***********************************************************************************************************************
+ * @purpose: Inform Owner Parking Parking Lot is full or not
+ * @Author: Priyanka Garad
+ * Date: 24/5/2020
+ * *********************************************************************************************************************/
+package com.bl.parkinglot.observer;
 public class Owner implements Observer {
     private String parkingFull;
     private String parkingSpace;

@@ -1,4 +1,9 @@
-package com.bl.parkinglot.model;
+/***********************************************************************************************************************
+ * @Purpose: In Police Department Check Vehicle number is Register or not
+ * @Author: Priyanka Garad
+ * Date: 24/5/2020
+ ***********************************************************************************************************************/
+package com.bl.parkinglot.observer;
 import java.util.HashMap;
 import java.util.Map;
 public class PoliceDepartment implements Observer {

@@ -1,6 +1,10 @@
 package com.bl.parkinglot;
+import com.bl.parkinglot.enums.Driver;
 import com.bl.parkinglot.exception.ParkingLotException;
 import com.bl.parkinglot.model.*;
+import com.bl.parkinglot.observer.AirportSecurity;
+import com.bl.parkinglot.observer.Owner;
+import com.bl.parkinglot.observer.PoliceDepartment;
 import com.bl.parkinglot.service.ParkingLotSystem;
 import org.junit.Assert;
 import org.junit.Before;
@@ -51,7 +55,6 @@ public class ParkingLotTest {
             Assert.assertEquals("unpark", result);
         } catch (ParkingLotException e) { }
     }
-
 
     @Test
     public void givenParkingLot_WhenFull_shouldInformOwner() {
@@ -261,6 +264,7 @@ public class ParkingLotTest {
             Assert.assertEquals("20,", police.getVehicleLocation());
         } catch (ParkingLotException e) { }
     }
+
 
     @Test
     public void givenParkingLotSystem_WhenParkedLargeVehicleAndDriverIsHandicap_ShouldReturnDetailsOfVehicle() {

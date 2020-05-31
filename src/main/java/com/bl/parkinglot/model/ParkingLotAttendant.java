@@ -1,4 +1,10 @@
-package com.bl.parkinglot.model;
+ /**********************************************************************************************************************
+ * @purpose: Store the Record of vehicle slot ,vehicle slot number
+ * @Author:priyanka Garad
+ * @Data:24/5/2020
+ **********************************************************************************************************************/
+ package com.bl.parkinglot.model;
+import com.bl.parkinglot.enums.Driver;
 import com.bl.parkinglot.exception.ParkingLotException;
 import java.util.Collections;
 import java.util.HashMap;
@@ -17,8 +23,8 @@ public class ParkingLotAttendant {
     }
 
     /**
-     *Find Empty parking slot
-     * return the key of vehicle
+     *@purpose:Find Empty parking slot
+     * @return: the key of vehicle
      */
     public int vehicleParkLotNumber(Vehicle vehicle) throws ParkingLotException {
         Integer key=0;
@@ -32,7 +38,6 @@ public class ParkingLotAttendant {
                     return key;
                 throw new ParkingLotException(ParkingLotException.MyexceptionType.LOT_IS_FULL,"Lot is full");
         }
-
         else if (vehicle.getVehicleType().equals("SMALL"))
             key=((checkLot()-1)*slot)+1;
             for (; key<=capacity ; key++)
@@ -42,9 +47,8 @@ public class ParkingLotAttendant {
     }
 
     /**+
-     *Find Object key
+     *@purpose:Find Object key
      */
-
     public int occupiedParkingLot(Object vehicle){
         int k = 0;
         for (Object vehicleVariable: parkingLot.values()) {
@@ -56,9 +60,8 @@ public class ParkingLotAttendant {
     }
 
     /**+
-     *Empty space in Parking lots
+     *@purpose:To check Empty space in Parking lot
      */
-
     public int checkLot(){
         int i=0,count=0,key=0;
         for (Object vehicle:parkingLot.values()) {
@@ -80,9 +83,8 @@ public class ParkingLotAttendant {
     }
 
     /**
-     *check lot full or not
+     *@purpose: To check Parking lot is full or not
      */
-
     public String isLotFull(){
         checkLot();
         Integer value = 0, lotNumber = 0;
