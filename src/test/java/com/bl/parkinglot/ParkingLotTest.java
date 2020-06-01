@@ -123,6 +123,7 @@ public class ParkingLotTest {
         } catch (ParkingLotException e) { }
     }
 
+
      @Test
      public void givenVehicleParkInLot_WhenCharge_shouldReturnParkingCharge() {
         try {
@@ -264,7 +265,6 @@ public class ParkingLotTest {
             Assert.assertEquals("20,", police.getVehicleLocation());
         } catch (ParkingLotException e) { }
     }
-
 
     @Test
     public void givenParkingLotSystem_WhenParkedLargeVehicleAndDriverIsHandicap_ShouldReturnDetailsOfVehicle() {
